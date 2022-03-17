@@ -72,7 +72,6 @@ public class ReaderServiceImpl implements ReaderService{
 	}
    //delete history
 	public void deleteHistory(long[] ids) {
-		String username = SecurityUtils.getPrincipal().getUsername();
 		Long userId = SecurityUtils.getPrincipal().getId();
 		for (long id : ids) {
 			borrowRespository.deleteUserHistory(userId,id);

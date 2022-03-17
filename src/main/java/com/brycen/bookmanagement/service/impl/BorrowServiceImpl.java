@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.brycen.bookmanagement.converter.BorrowConverter;
 import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
+import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.BorrowEntity;
 import com.brycen.bookmanagement.repository.BorrowRespository;
 import com.brycen.bookmanagement.service.BorrowService;
@@ -43,6 +44,9 @@ public class BorrowServiceImpl implements BorrowService{
 		}
 		return results;
 	}
+
+
+	
 
 
 

@@ -6,6 +6,6 @@ import com.brycen.bookmanagement.dto.response.UserDTO;
 public interface ReaderService {
 	UserDTO getInfo();
 	UserDTO save(UserDTO dto);
-	public void deleteHistory(long[] ids);
-	public int changePassword(ChangePasswordRequest password);
+	void deleteHistory(long[] ids);
+    int changePassword(ChangePasswordRequest password);
 }

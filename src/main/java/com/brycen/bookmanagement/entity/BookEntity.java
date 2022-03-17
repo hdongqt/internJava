@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.sun.istack.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -44,15 +45,15 @@ public class BookEntity extends BaseEntity {
 	private String image;
 	
 	@Column(name = "price")
-	@NotEmpty(message = "Giá không được để trống")
+	@NotNull
 	private Long price;
 	
 	@Column(name = "total")
-	@NotEmpty(message = "Tổng số lượng không được để trống")
+	@NotNull
 	private int total;
 
 	@Column(name = "inventory")
-	@NotEmpty(message = "Tồn kho không được để trống")
+	@NotNull
 	private int inventory;
 
 	

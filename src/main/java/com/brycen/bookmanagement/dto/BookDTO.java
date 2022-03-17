@@ -6,6 +6,9 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.springframework.web.multipart.MultipartFile;
+
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +27,9 @@ public class BookDTO extends BaseDTO{
 	private Long price;
 	@Min(1)
 	private int total;
+	@Min(1)
 	private int inventory;
 	private Date createDate;
 	private Date updateDate;
+	private MultipartFile file;
 }

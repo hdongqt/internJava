@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.brycen.bookmanagement.converter.BookConverter;
 import com.brycen.bookmanagement.converter.CustomConverter;
+import com.brycen.bookmanagement.converter.UploadFileIMG;
 import com.brycen.bookmanagement.dto.BookDTO;
 import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.CategoryEntity;
+import com.brycen.bookmanagement.exception.ResourceNotFoundException;
 import com.brycen.bookmanagement.repository.BookRepository;
 import com.brycen.bookmanagement.repository.CategoryRepository;
 import com.brycen.bookmanagement.service.BookService;
@@ -30,17 +32,21 @@ public class BookServiceImpl implements BookService{
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private UploadFileIMG uploadIMG;
 
-	@Override
-	public List<BookDTO> findAll(Pageable pageable) {
-		List<BookEntity> listAllBook  = bookRepository.findAll(pageable).getContent();
-		List<BookDTO> results = customConverter.mapList(listAllBook, BookDTO.class);
-		return results;
-	}
+//	@Override
+//	public List<BookDTO> findAll(Pageable pageable) {
+//		List<BookEntity> listAllBook  = bookRepository.findAll(pageable).getContent();
+//		List<BookDTO> results = customConverter.mapList(listAllBook, BookDTO.class);
+//		return results;
+//	}
 	@Override
 	public BookDTO getById(long id) {
-		BookEntity bookEntity = bookRepository.getById(id);
-		return bookConverter.toDTO(bookEntity);
+		BookEntity bookEntity = bookRepository.findById(id).orElseThrow(() 
+				-> new ResourceNotFoundException("Book", "id", id));
+		return customConverter.mapToDTO(bookEntity, BookDTO.class);
 	}
 	@Override
 	public int totalItem() {
@@ -52,10 +58,16 @@ public class BookServiceImpl implements BookService{
 		BookEntity bookEntity  = new BookEntity();
 		if(bookDTO.getId() !=null) { //kiem tra update
 			BookEntity oldBookEntity = bookRepository.getById(bookDTO.getId());
-			bookEntity = bookConverter.toEntity(bookDTO, oldBookEntity);
+			bookEntity = customConverter.mapToEntity(bookDTO, oldBookEntity);
+			if(bookDTO.getFile() !=null) {
+				bookEntity.setImage(uploadIMG.upload(bookDTO.getFile())); 
+			}
 			bookEntity.setUpdateDate(new Date());
 		}else { //them moi
-			bookEntity = bookConverter.toEntity(bookDTO);
+ 			bookEntity = bookConverter.toEntity(bookDTO);
+			if(bookDTO.getFile() !=null) {
+				bookEntity.setImage(uploadIMG.upload(bookDTO.getFile() )); 
+			}
 			bookEntity.setCreateDate(new Date());
 		}
 		CategoryEntity categoryEntity  = categoryRepository.findOneByCode(bookDTO.getCategoryCode()); //laytheloai
@@ -64,19 +76,31 @@ public class BookServiceImpl implements BookService{
 		return bookConverter.toDTO(bookEntity);
 	}
 	@Override
-	public void delete(long id) {
-		
-		bookRepository.deleteById(id);	
+	public void delete(long[] ids) {
+		for (long id : ids) {
+			bookRepository.deleteById(id);	
+		}
 	}
 	@Override
 	public void updateWhenDeleteCategory(CategoryEntity cateOld) {
 		CategoryEntity cateOther = categoryRepository.findOneByCode("other");
 		 bookRepository.updateCategoryOfBook(cateOld, cateOther);
 	}
+    //show all book , search 
 	@Override
-	public List<BookDTO> findAll() {
-		List<BookEntity> listAllBook  = bookRepository.findAll();
+	public List<BookDTO> findBook(String key,String type,Pageable pageable) {
+		List<BookEntity> listAllBook = new ArrayList<BookEntity>();
+		if(key!=null && type!=null) {
+			if(type.equals("bookname")) {
+				listAllBook =  bookRepository.findByBooknameLike("%"+key+"%",pageable);
+			}else {
+				listAllBook =  bookRepository.findByCategoryNameLike(key,pageable);
+			}
+		}else {
+			listAllBook =  bookRepository.findAll(pageable).toList();
+		}
 		List<BookDTO> results = customConverter.mapList(listAllBook, BookDTO.class);
 		return results;
 	}
+	
 }

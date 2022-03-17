@@ -2,7 +2,6 @@ package com.brycen.bookmanagement.converter;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.brycen.bookmanagement.dto.BookDTO;
@@ -11,7 +10,6 @@ import com.brycen.bookmanagement.entity.BorrowEntity;
 
 @Component
 public class BorrowConverter {
-	@Autowired
 	private CustomConverter appConverter;
 	  public UserHistoryResponse mapEntityToHistoryResponse(BorrowEntity entity){
 		  UserHistoryResponse response = appConverter.mapToDTO(entity, UserHistoryResponse.class);

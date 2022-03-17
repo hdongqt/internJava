@@ -1,0 +1,30 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| s                                                               | p                                          | o                                                               |
+==================================================================================================================================================================================
+| <https://www.facebook.com/alone.2104/posts/1546450075728225>    | <http://purl.org/dc/elements/1.1/title>    | "Good Morning"                                                  |
+| <https://www.facebook.com/alone.2104/posts/1546450075728225>    | <http://purl.org/dc/elements/1.1/date>     | "2021-12-12"                                                    |
+| <https://www.facebook.com/vanlynguyenn>                         | <http://xmlns.com/foaf/0.1/mbox>           | <mailto:vanlyy@gmail.com>                                       |
+| <https://www.facebook.com/vanlynguyenn>                         | <http://xmlns.com/foaf/0.1/name>           | "Van Ly"                                                        |
+| <https://www.facebook.com/vanlynguyenn>                         | <http://xmlns.com/foaf/0.1/birthday>       | "2000-03-16"                                                    |
+| <https://www.facebook.com/vanlynguyenn>                         | <http://purl.org/dc/elements/1.1/creator>  | <https://www.facebook.com/vanlyynguyenn/                        |
+														 posts/1522450075728211> 					 |
+| <https://www.facebook.com/vanlynguyenn>                         | <http://xmlns.com/foaf/0.1/knows>          | <https://www.facebook.com/HVNS.Hoaminzy>                        |
+| <https://www.facebook.com/alone.2104/posts/2940450075728225>    | <http://purl.org/dc/elements/1.1/title>    | "Good Afternoon"                                                |
+| <https://www.facebook.com/alone.2104/posts/2940450075728225>    | <http://purl.org/dc/elements/1.1/date>     | "2021-12-13"                                                    |
+| <https://www.facebook.com/namnop>                               | <http://xmlns.com/foaf/0.1/mbox>           | <mailto:namopa@gmail.com>                                       |
+| <https://www.facebook.com/namnop>                               | <http://xmlns.com/foaf/0.1/name>           | "Van Nam"                                                       |
+| <https://www.facebook.com/namnop>                               | <http://xmlns.com/foaf/0.1/phone>          | "0292328188"                                                    |
+| <https://www.facebook.com/vanlyynguyenn/posts/1522450075728211> | <http://purl.org/dc/elements/1.1/title>    | "Music Relax"                                                   |
+| <https://www.facebook.com/vanlyynguyenn/posts/1522450075728211> | <http://purl.org/dc/elements/1.1/date>     | "2021-01-12"                                                    |
+| <https://www.facebook.com/alone.2104>                           | <http://xmlns.com/foaf/0.1/name>           | "Hoang Huu Dong"                                                |
+| <https://www.facebook.com/alone.2104>                           | <http://xmlns.com/foaf/0.1/birthday>       | "2000-04-21"                                                    |
+| <https://www.facebook.com/alone.2104>                           | <http://xmlns.com/foaf/0.1/phone>          | "0373886374"                                                    |
+| <https://www.facebook.com/alone.2104>                           | <http://purl.org/dc/elements/1.1/creator>  | <https://www.facebook.com/alone.2104/posts/                     |
+														 1546450075728225>    						 |
+| <https://www.facebook.com/alone.2104>                           | <http://purl.org/dc/elements/1.1/creator>  | <https://www.facebook.com/alone.2104/posts/                     |
+														 2940450075728225>                                               |
+| <https://www.facebook.com/alone.2104>                           | <http://xmlns.com/foaf/0.1/knows>          | <https://www.facebook.com/namnop>                               |
+| <https://www.facebook.com/alone.2104>                           | <http://xmlns.com/foaf/0.1/knows>          | <https://www.facebook.com/vanlynguyenn>                         |
+| <https://www.facebook.com/HVNS.Hoaminzy>                        | <http://www.w3.org/2001/vcard-rdf/3.0#ADR> | "Bac Ninh"                                                      |
+| <https://www.facebook.com/HVNS.Hoaminzy>                        | <http://xmlns.com/foaf/0.1/name>           | "Hoa MinZy"                                                     |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
