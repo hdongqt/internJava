@@ -8,6 +8,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookOutput extends BaseOuput<BookDTO>{
-	private int page;
-	private int totalPage;
+
 }

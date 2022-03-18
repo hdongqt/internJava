@@ -26,4 +26,17 @@ public interface BorrowRespository extends JpaRepository<BorrowEntity, Long>{
 	 @Modifying
 	 @Query("delete BorrowEntity b where b.user.id =?1 and b.id = ?2")
 	 void deleteUserHistory(Long userId,Long id);
+	 
+	 //librarian 
+	 //get all
+	 @Query("select b from BorrowEntity b where b.user.fullname like %?1%")
+	 List<BorrowEntity> getAllListBorrow(String username,Pageable pageable);
+	 
+	 // lấy danh sách chưa trả hoặc đã trả
+	 @Query("select b from BorrowEntity b where b.status = ?2 and b.user.fullname like %?1%")
+	 List<BorrowEntity> getListBorrowPaidOrUnPaid(String fullname,boolean status,Pageable pageable);
+	 
+	 
+	 @Query("select b from BorrowEntity b where b.user.fullname = ?1 and b.status = 0 and now() > b.appointmentDate")
+	 List<BorrowEntity> getListBorrowOutDate(String fullname,Pageable pageable);
 }
