@@ -69,7 +69,7 @@ public class BookController {
 		model.setId(id);
 		return bookService.save(model);
 	} 
-	@DeleteMapping(value="/api/books/{id}")
+	@DeleteMapping(value="/api/books")
 	public void deleteBook(long[] ids) {
 		bookService.delete(ids);
 	}

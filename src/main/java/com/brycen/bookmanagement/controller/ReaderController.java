@@ -29,7 +29,7 @@ public class ReaderController {
 
       
 //	  @PreAuthorize("hasRole('READER')")
-		@GetMapping(value= "/api/reader")
+		@GetMapping(value= "/api/reader/info")
 		public ResponseEntity<?> getInfo() {
 				return new ResponseEntity<>(readerService.getInfo(),HttpStatus.OK);
 		}

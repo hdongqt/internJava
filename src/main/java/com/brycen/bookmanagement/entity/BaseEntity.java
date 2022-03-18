@@ -21,6 +21,6 @@ public abstract class BaseEntity {
 		private Long id;
 		
 		@Column(name="is_delete")
-		 @ColumnDefault("false")
+//		@ColumnDefault("false")
 		private boolean isDelete = Boolean.FALSE;
 }

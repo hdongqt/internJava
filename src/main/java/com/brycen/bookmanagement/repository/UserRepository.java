@@ -1,9 +1,11 @@
 package com.brycen.bookmanagement.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +16,9 @@ import com.brycen.bookmanagement.entity.UserEntity;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
   Optional<UserEntity> findByUsername(String username);
-
+  
+  UserEntity findOneByUsername(String username);
+  
   Boolean existsByUsername(String username);
   
   @Query("select u from UserEntity u where u.email = ?1 and username != ?2")
@@ -26,4 +30,8 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   @Modifying
   @Query("update UserEntity u set u.password = ?2 where u.username=?1")
   int changePassword(String username, String newPassword);
+  
+  List<UserEntity> findByFullnameLike(String key);
+  
+  List<UserEntity> findByFullnameLike(String key,Pageable pageable);
 }

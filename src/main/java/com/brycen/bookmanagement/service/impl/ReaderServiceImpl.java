@@ -1,6 +1,10 @@
 package com.brycen.bookmanagement.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -86,4 +90,15 @@ public class ReaderServiceImpl implements ReaderService{
 		}
 		return -1;
 	}
+ //tìm kiếm user
+	@Override
+	public List<UserDTO> searchReader(String fullname) {
+		List<UserDTO> lists = new ArrayList<UserDTO>();
+		if(fullname !=null && fullname.trim() !="") {
+			List<UserEntity> entitys = userRepository.findByFullnameLike("%"+fullname+"%");
+			lists =  customConverter.mapList(entitys, UserDTO.class);
+		}
+		return lists;
+	}
+
 }
