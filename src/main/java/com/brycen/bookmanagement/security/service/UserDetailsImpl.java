@@ -27,11 +27,11 @@ public class UserDetailsImpl implements UserDetails {
 	private String cmnd;
 	@JsonIgnore
 	private String password;
-
+	private String phone;
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserDetailsImpl(Long id, String username, String fullname, String password,
-			Date birth,String email,Boolean sex,String address,String cmnd,
+			Date birth,String email,Boolean sex,String address,String cmnd,String phone,
 			RoleEntity role) {
 		this.id = id;
 		this.username = username;
@@ -42,12 +42,14 @@ public class UserDetailsImpl implements UserDetails {
 		this.cmnd = cmnd;
 		this.sex = sex;
 		this.email = email;
+		this.phone = phone;
 		this.authorities = mapRolesToAuthorities(role);
 	}
 
 	public static UserDetailsImpl build(UserEntity user) {
 		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getFullname(), 
 				user.getPassword(),user.getBirth(),user.getEmail(),user.isSex(),user.getAddress(),user.getCMND(),
+				user.getPhone(),
 			 user.getRole());
 	}
 
@@ -161,6 +163,14 @@ public class UserDetailsImpl implements UserDetails {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 

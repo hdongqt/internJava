@@ -4,18 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.brycen.bookmanagement.converter.CustomConverter;
 import com.brycen.bookmanagement.dto.request.ChangePasswordRequest;
 import com.brycen.bookmanagement.dto.response.UserDTO;
-import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
-import com.brycen.bookmanagement.entity.BorrowEntity;
 import com.brycen.bookmanagement.entity.UserEntity;
 import com.brycen.bookmanagement.exception.BookAPIException;
 import com.brycen.bookmanagement.exception.ResourceNotFoundException;
@@ -51,6 +46,7 @@ public class ReaderServiceImpl implements ReaderService{
 			us.setSex(userDetails.isSex());
 			us.setCmnd(userDetails.getCmnd());
 			us.setUsername(userDetails.getUsername());
+			us.setPhone(userDetails.getPhone());
 			return us;
 		} catch (Exception e) {
 			throw new BookAPIException(HttpStatus.BAD_REQUEST, "User không hợp lệ");

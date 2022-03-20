@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
 		// Create new user's account
 		UserEntity user = new UserEntity(signUpRequest.getUsername(), signUpRequest.getEmail(), 
 				encoder.encode(signUpRequest.getPassword()), signUpRequest.getFullname(), 
-				signUpRequest.getBirth(), signUpRequest.isSex(), signUpRequest.getAddress(),signUpRequest.getCmnd());
+				signUpRequest.getBirth(), signUpRequest.isSex(), signUpRequest.getAddress(),signUpRequest.getCmnd(),signUpRequest.getPhone());
 		RoleEntity userRole = roleRepository.findByCode("ROLE_USER")
 					.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 		user.setRole(userRole);

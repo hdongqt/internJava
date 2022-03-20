@@ -16,4 +16,5 @@ public class UserDTO {
 	private String cmnd;
 	private boolean sex;
 	private String username;
+	private String phone;
 }

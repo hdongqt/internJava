@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EntityListeners;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -14,19 +14,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Value;
 
 @Setter
 @Getter
 @Entity
 @Table(name="borrows")
+@EntityListeners(AuditingEntityListener.class)
 public class BorrowEntity extends BaseEntity{
 	@Column
 	private Date borrowDate;
@@ -43,16 +44,20 @@ public class BorrowEntity extends BaseEntity{
 	private boolean status =Boolean.FALSE;
 	
 	@Column
+	@CreatedDate
 	private Date createDate;
 	@Column
+	@LastModifiedDate
 	private Date updateDate;
 	
 	@Column
 	@Size(max=20)
+	@CreatedBy
 	private String createBy;
 	
 	@Column
 	@Size(max=20)
+	@LastModifiedBy
 	private String updateBy;
 	
 

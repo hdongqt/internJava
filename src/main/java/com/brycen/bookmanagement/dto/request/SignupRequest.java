@@ -41,4 +41,7 @@ public class SignupRequest {
   @Size(min = 6, max = 20,message = "Mật khẩu từ 6- 20 kí tự")
   private String password;
   
+  @NotBlank(message = "Số điện thoại không hợp lệ")
+  @Size(min = 10, max = 11,message = "Số điện thoại không hợp lệ")
+  private String phone;
 }

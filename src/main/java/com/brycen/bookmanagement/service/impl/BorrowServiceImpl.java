@@ -1,7 +1,6 @@
 package com.brycen.bookmanagement.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.brycen.bookmanagement.converter.BorrowConverter;
 import com.brycen.bookmanagement.dto.BorrowDTO;
-import com.brycen.bookmanagement.dto.request.BorrowRequest;
+import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
+import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
 import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
-import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.BorrowEntity;
 import com.brycen.bookmanagement.entity.UserEntity;
 import com.brycen.bookmanagement.exception.ResourceNotFoundException;
 import com.brycen.bookmanagement.repository.BorrowRespository;
 import com.brycen.bookmanagement.repository.UserRepository;
-import com.brycen.bookmanagement.security.SecurityUtils;
 import com.brycen.bookmanagement.service.BorrowService;
 
 @Service
@@ -113,9 +111,8 @@ public class BorrowServiceImpl implements BorrowService{
 	}
 
 	@Override
-	public BorrowDTO createBorrow(BorrowRequest borrowRequest) {
+	public BorrowDTO createBorrow(BorrowCreateRequest borrowRequest) {
 		BorrowEntity entity = borrowConverter.mapBorrowCreateRequestToEntity(borrowRequest);
-		entity.setCreateBy(SecurityUtils.getPrincipal().getUsername());
 		UserEntity user = userRepository.findById(borrowRequest.getIdUser()).orElseThrow(()->
 		new ResourceNotFoundException("Reader", "id", borrowRequest.getIdUser()));
 		entity.setUser(user);
@@ -123,5 +120,13 @@ public class BorrowServiceImpl implements BorrowService{
 		return borrowConverter.mapEntityToBorrowDTO(entity);
 	}
 
-
+	@Override
+	public BorrowDTO updateBorrow(BorrowUpdateRequest borrow) {
+		BorrowEntity entity = borrowRespository.findById(borrow.getId()).orElseThrow(()->
+		 new ResourceNotFoundException("Borrow", "id", borrow.getId()));
+		entity = borrowConverter.mapBorrowUpateRequestToEntity(borrow, entity);
+		entity = borrowRespository.save(entity);
+		return borrowConverter.mapEntityToBorrowDTO(entity);
+	}
+		
 }

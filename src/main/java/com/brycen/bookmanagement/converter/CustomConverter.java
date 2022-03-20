@@ -23,8 +23,9 @@ public class CustomConverter {
 		      .map(element -> mapper.map(element, targetClass))
 		      .collect(Collectors.toList());
 	}
-	  public static <S, D> D mapToEntity(final S source, D destination) {
+	  public <S, D> D mapToEntity(final S source, D destination) {
 		    mapper.getConfiguration().setSkipNullEnabled(true);
+		    mapper.getConfiguration().setAmbiguityIgnored(true);
 		    mapper.map(source, destination);
 	        return destination;
 	    }

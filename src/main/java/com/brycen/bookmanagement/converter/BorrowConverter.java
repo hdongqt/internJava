@@ -1,14 +1,16 @@
 package com.brycen.bookmanagement.converter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.brycen.bookmanagement.dto.BookDTO;
 import com.brycen.bookmanagement.dto.BorrowDTO;
-import com.brycen.bookmanagement.dto.request.BorrowRequest;
-import com.brycen.bookmanagement.dto.response.BorrowOutput;
+import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
+import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
 import com.brycen.bookmanagement.dto.response.UserDTO;
 import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
 import com.brycen.bookmanagement.entity.BookEntity;
@@ -38,12 +40,30 @@ public class BorrowConverter {
 		  borrowDTO.setUser(appConverter.mapToDTO(entity.getUser(), UserDTO.class));
 	      return borrowDTO;
 	   }
-	  public BorrowEntity mapBorrowCreateRequestToEntity(BorrowRequest borrowRequest) {
+	  public BorrowEntity mapBorrowCreateRequestToEntity(BorrowCreateRequest borrowRequest) {
 		  BorrowEntity entity = new BorrowEntity();
-		  entity.setBooks(appConverter.mapList(borrowRequest.getListBorrow(), BookEntity.class));
+		  List<BookEntity> lists = new ArrayList<BookEntity>();
+		  for (long id : borrowRequest.getIdBooks()) {
+			  BookEntity b = new BookEntity();
+			  b.setId(id);
+			  lists.add(b);
+		  }
+		  entity.setBooks(lists);
 		  entity.setAppointmentDate(borrowRequest.getAppointmentDate());
 		  entity.setBorrowDate(borrowRequest.getBorrowDate());
-		  entity.setCreateDate(new Date());
+//		  entity.setCreateDate(new Date());
 		  return entity;
+	  }
+	  public BorrowEntity mapBorrowUpateRequestToEntity(BorrowUpdateRequest borrow,BorrowEntity entity) {
+		  entity = appConverter.mapToEntity(borrow, entity);
+		  List<BookEntity> lists = new ArrayList<BookEntity>();
+		  for (long id : borrow.getIdBooks()) {
+			  BookEntity b = new BookEntity();
+			  b.setId(id);
+			  lists.add(b);
+		  }
+		  entity.setBooks(lists);
+		   if(borrow.getReturnDate() !=null) entity.setStatus(true); 
+		return entity;
 	  }
 }

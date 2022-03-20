@@ -1,22 +1,11 @@
 package com.brycen.bookmanagement.exception;
 
-import java.net.BindException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -57,7 +46,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     		HttpHeaders headers, HttpStatus status, WebRequest request) {
     	 Map<String, String> errors = new HashMap<>();
        ex.getBindingResult().getAllErrors().forEach((error) ->{
-           String fieldName = ((FieldError)error).getField();
+//           String fieldName = ((FieldError)error).getField();
            String message = error.getDefaultMessage();
            errors.put("message", message);
        });

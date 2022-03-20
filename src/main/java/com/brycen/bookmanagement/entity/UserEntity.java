@@ -14,16 +14,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -69,7 +63,11 @@ public class UserEntity extends BaseEntity{
 	  @Size(max = 150)
 	  private String address;
 
-	  public UserEntity(String username, String email, String password, String fullname,Date birth,boolean sex,String address,String CMND) {
+	  @Column
+	  @Size(max = 11)
+	  private String phone;
+	  
+	  public UserEntity(String username, String email, String password, String fullname,Date birth,boolean sex,String address,String CMND,String phone) {
 		this.username = username;
 		this.CMND = CMND;
 		this.email = email;
@@ -78,6 +76,7 @@ public class UserEntity extends BaseEntity{
 		this.birth = birth;
 		this.sex = sex;
 		this.address = address;
+		this.phone = phone;
 	}
 
 	  @ManyToOne

@@ -21,7 +21,7 @@ public class SecurityUtils {
 		  if(instance == null) {
 			  instance = new SecurityUtils();
 		  }
-		  return instance.currentUser;
+		  return SecurityUtils.currentUser;
 	    }
 	  
 }

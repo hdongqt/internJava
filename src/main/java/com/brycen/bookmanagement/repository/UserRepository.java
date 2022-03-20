@@ -34,4 +34,13 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   List<UserEntity> findByFullnameLike(String key);
   
   List<UserEntity> findByFullnameLike(String key,Pageable pageable);
+  
+  
+  
+  
+  //admin
+  @Query("select u from UserEntity u where u.role.id = ?1 and  fullname like %?2%")
+  List<UserEntity> findUserByRoleAndFullname(Long idRole,String fullname,Pageable pageable);
+  
+  
 }
