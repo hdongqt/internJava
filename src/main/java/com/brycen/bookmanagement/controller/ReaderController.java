@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,15 +18,12 @@ import com.brycen.bookmanagement.dto.request.ChangePasswordRequest;
 import com.brycen.bookmanagement.dto.response.UserDTO;
 import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
 import com.brycen.bookmanagement.security.SecurityUtils;
-import com.brycen.bookmanagement.service.BorrowService;
 import com.brycen.bookmanagement.service.ReaderService;
 
 @RestController
 public class ReaderController {
 	  @Autowired 
 	  private ReaderService readerService;
-      @Autowired 
-	  private BorrowService borrowService;
 
       
 //	  @PreAuthorize("hasRole('READER')")
@@ -40,7 +38,7 @@ public class ReaderController {
 				@RequestParam(value = "page" ,defaultValue = "1") Integer page,
 				@RequestParam(value = "limit", defaultValue =  "1") Integer limit
 				) {
-			List<UserHistoryResponse> lists = borrowService.getListUserHistory(
+			List<UserHistoryResponse> lists = readerService.getListUserHistory(
 					SecurityUtils.getPrincipal().getUsername(),
 					filter,
 					PageRequest.of(page-1, limit));
@@ -48,8 +46,8 @@ public class ReaderController {
 		}
 		
 		//update info 
-		@PostMapping(value= "/api/reader")
-		public ResponseEntity<?> test( @RequestBody UserDTO user){
+		@PutMapping(value= "/api/reader")
+		public ResponseEntity<?> updateInfo( @RequestBody UserDTO user){
 			UserDTO d = readerService.save(user);
 			return new ResponseEntity<>(d,HttpStatus.OK);
 		}

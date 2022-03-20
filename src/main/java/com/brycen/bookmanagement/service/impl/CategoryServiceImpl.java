@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryConverter categoryConverter;
 
 	@Override
-	public List<CategoryDTO> findAll() {
-		List<CategoryEntity> listEntity = categoryRepository.findAll();
+	public List<CategoryDTO> findAll(Pageable pageable) {
+		List<CategoryEntity> listEntity = categoryRepository.findAll(pageable).toList();
 		List<CategoryDTO> listDTO = new ArrayList<CategoryDTO>();
 		for (CategoryEntity entity : listEntity) {
 			listDTO.add(categoryConverter.toDTO(entity));
@@ -41,6 +42,8 @@ public class CategoryServiceImpl implements CategoryService {
 		CategoryEntity categoryEntity  = new CategoryEntity();
 		if(categoryDTO.getId() !=null) { //kiem tra update
 			CategoryEntity oldCategoryEntity = categoryRepository.getById(categoryDTO.getId());
+			CategoryEntity check = categoryRepository.checkExitsCategoryWhenUpdate(categoryDTO.getCode(),oldCategoryEntity.getId());
+			if(check!=null) throw new BookAPIException(HttpStatus.BAD_REQUEST, "Category code existed");
 			categoryEntity = categoryConverter.toEntity(categoryDTO, oldCategoryEntity);
 		}else { //them moi
 			CategoryEntity check = categoryRepository.findOneByCode(categoryDTO.getCode());
@@ -73,5 +76,10 @@ public class CategoryServiceImpl implements CategoryService {
 	public CategoryDTO findOneByCode(String code) {
 		CategoryEntity categoryEntity = categoryRepository.findOneByCode(code);
 		return categoryConverter.toDTO(categoryEntity);
+	}
+	
+	@Override
+	public int totalItem() {
+		return (int) categoryRepository.count();
 	}
 }

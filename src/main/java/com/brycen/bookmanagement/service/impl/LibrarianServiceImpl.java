@@ -1,6 +1,7 @@
 package com.brycen.bookmanagement.service.impl;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,66 +9,45 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.brycen.bookmanagement.converter.BorrowConverter;
+import com.brycen.bookmanagement.converter.CustomConverter;
 import com.brycen.bookmanagement.dto.BorrowDTO;
 import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
 import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
-import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
+import com.brycen.bookmanagement.dto.response.UserDTO;
 import com.brycen.bookmanagement.entity.BorrowEntity;
 import com.brycen.bookmanagement.entity.UserEntity;
 import com.brycen.bookmanagement.exception.ResourceNotFoundException;
 import com.brycen.bookmanagement.repository.BorrowRespository;
 import com.brycen.bookmanagement.repository.UserRepository;
-import com.brycen.bookmanagement.service.BorrowService;
-
+import com.brycen.bookmanagement.service.LibrarianService;
 @Service
-public class BorrowServiceImpl implements BorrowService{
+public class LibrarianServiceImpl implements LibrarianService  {
 	@Autowired
 	private BorrowRespository borrowRespository;
 	@Autowired
 	private BorrowConverter borrowConverter;
 	@Autowired
 	private UserRepository userRepository;
-
-	public List<UserHistoryResponse> getListUserHistory(String username,String filter,Pageable pageable) {
-		List<BorrowEntity> lists = new ArrayList<BorrowEntity>();
-		switch (filter) {
-		case "OUTDATE":
-			lists = borrowRespository.getHistoryBorrowUserOutDate(username,pageable);
-			break;
-		case "PAID":
-			lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaid(username,true,pageable);
-			break;
-		case "UNPAID":
-			lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaid(username,false,pageable);
-			break;
-		default:
-			lists = borrowRespository.getByUsername(username,pageable);
-			break;
-		}
-		List<UserHistoryResponse> results = new  ArrayList<UserHistoryResponse>(); 
-		for (BorrowEntity borrowEntity : lists) {
-			results.add(borrowConverter.mapEntityToHistoryResponse(borrowEntity));
-		}
-		return results;
-	}
-
-  //librarian 
-	@Override
+	@Autowired
+	private CustomConverter customConverter;
+	
+	//------------------------librarian ---------------------
+			@Override
 	public List<BorrowDTO> getListBorrow(String filter, String username, Pageable pageable) {
 		List<BorrowEntity> lists = new ArrayList<BorrowEntity>();
 		if(username !=null &&  username.trim() != "") {
 			switch (filter) {
 			case "OUTDATE":
-				lists = borrowRespository.getHistoryBorrowUserOutDate(username, pageable);
+				lists = borrowRespository.getHistoryBorrowUserOutDateForManager(username, pageable);
 				break;
 			case "PAID":
-				lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaid(username, true, pageable);
+				lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaidForManager(username, true, pageable);
 				break;
 			case "UNPAID":
-				lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaid(username, false, pageable);
+				lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaidForManager(username, false, pageable);
 				break;
 			default:
-				lists = borrowRespository.getByUsername(username, pageable);
+				lists = borrowRespository.getBorrowOfUserForManager(username, pageable);
 				break;
 			}
 		}else {
@@ -128,5 +108,14 @@ public class BorrowServiceImpl implements BorrowService{
 		entity = borrowRespository.save(entity);
 		return borrowConverter.mapEntityToBorrowDTO(entity);
 	}
-		
+	 //tìm kiếm user
+	@Override
+	public List<UserDTO> searchReader(String fullname) {
+		List<UserDTO> lists = new ArrayList<UserDTO>();
+		if(fullname !=null && fullname.trim() !="") {
+			List<UserEntity> entitys = userRepository.findByFullnameLike("%"+fullname+"%");
+			lists =  customConverter.mapList(entitys, UserDTO.class);
+		}
+		return lists;
+	}
 }

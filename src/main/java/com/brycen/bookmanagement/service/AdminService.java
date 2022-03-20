@@ -11,4 +11,5 @@ public interface AdminService {
 List<AdminInfoUserDTO> showUser(String roleCode, String fullname, Pageable pageable);
 int totalItem();
 AdminInfoUserDTO getUserDetail(long id);
+AdminInfoUserDTO updateUser(AdminInfoUserDTO dto);
 }

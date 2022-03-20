@@ -12,7 +12,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +21,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "categorys")
 @SQLDelete(sql = "Update categorys set is_delete = true Where id = ?")
-@Where(clause = "is_delete = false")
 public class CategoryEntity extends BaseEntity{
  
 	@Column

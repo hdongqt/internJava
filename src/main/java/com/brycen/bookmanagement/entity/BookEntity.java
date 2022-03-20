@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.SQLDelete;
+
 import com.sun.istack.NotNull;
 
 import lombok.Getter;
@@ -23,6 +25,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name= "books")
+@SQLDelete(sql = "Update books set is_delete = true Where id = ?")
 public class BookEntity extends BaseEntity {
 
 	

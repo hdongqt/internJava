@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.brycen.bookmanagement.converter.BorrowConverter;
 import com.brycen.bookmanagement.converter.CustomConverter;
 import com.brycen.bookmanagement.dto.request.ChangePasswordRequest;
 import com.brycen.bookmanagement.dto.response.UserDTO;
+import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
+import com.brycen.bookmanagement.entity.BorrowEntity;
 import com.brycen.bookmanagement.entity.UserEntity;
 import com.brycen.bookmanagement.exception.BookAPIException;
 import com.brycen.bookmanagement.exception.ResourceNotFoundException;
@@ -30,6 +34,8 @@ public class ReaderServiceImpl implements ReaderService{
 	@Autowired
 	private CustomConverter customConverter;
 	
+	@Autowired
+	private BorrowConverter borrowConverter;
     @Autowired
     PasswordEncoder encoder;
 	
@@ -86,15 +92,40 @@ public class ReaderServiceImpl implements ReaderService{
 		}
 		return -1;
 	}
- //tìm kiếm user
-	@Override
-	public List<UserDTO> searchReader(String fullname) {
-		List<UserDTO> lists = new ArrayList<UserDTO>();
-		if(fullname !=null && fullname.trim() !="") {
-			List<UserEntity> entitys = userRepository.findByFullnameLike("%"+fullname+"%");
-			lists =  customConverter.mapList(entitys, UserDTO.class);
+
+	
+	public List<UserHistoryResponse> getListUserHistory(String username,String filter,Pageable pageable) {
+		List<BorrowEntity> lists = new ArrayList<BorrowEntity>();
+		switch (filter) {
+		case "OUTDATE":
+			lists = borrowRespository.getHistoryBorrowUserOutDate(username,pageable);
+			break;
+		case "PAID":
+			lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaid(username,true,pageable);
+			break;
+		case "UNPAID":
+			lists = borrowRespository.getHistoryBorrowUserPaidOrUnPaid(username,false,pageable);
+			break;
+		default:
+			lists = borrowRespository.getByUsername(username,pageable);
+			break;
 		}
-		return lists;
+		List<UserHistoryResponse> results = new  ArrayList<UserHistoryResponse>(); 
+		for (BorrowEntity borrowEntity : lists) {
+			results.add(borrowConverter.mapEntityToHistoryResponse(borrowEntity));
+		}
+		return results;
+	}
+
+	@Override
+	public void delete(long[] ids) {
+		for (long id : ids) {
+			borrowRespository.deleteById(id);
+		}
+	}
+	@Override
+	public int totalItem() {
+		return (int) borrowRespository.count();
 	}
 
 }

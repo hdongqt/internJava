@@ -5,7 +5,9 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -18,8 +20,12 @@ import lombok.Setter;
 @Table(name="roles")
 @Getter
 @Setter
-public class RoleEntity extends BaseEntity {
+public class RoleEntity {
 	
+		@Id
+		@GeneratedValue(strategy = GenerationType.IDENTITY)
+		private Long id;
+
 	    @Column
 		@NotBlank
 		@Size(max = 50)
@@ -30,6 +36,6 @@ public class RoleEntity extends BaseEntity {
 		@Column(name = "code",unique = true)
 		private String code;
 	  
-	  @OneToMany(mappedBy = "role",fetch = FetchType.EAGER)
-	private List<UserEntity> users = new ArrayList<>();
+		@OneToMany(mappedBy = "role")
+		private List<UserEntity> users = new ArrayList<>();
 }

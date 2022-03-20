@@ -22,7 +22,7 @@ public class BorrowDTO {
 	private String createBy;
 	private String updateBy;
 	private int status;
-	
+	private int is_delete;
 	private List<BookDTO> listbooks;
 	private UserDTO user;
 }

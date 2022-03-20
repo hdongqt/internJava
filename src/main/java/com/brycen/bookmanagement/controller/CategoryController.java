@@ -3,6 +3,7 @@ package com.brycen.bookmanagement.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,24 +12,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.brycen.bookmanagement.dto.CategoryDTO;
 import com.brycen.bookmanagement.dto.response.CategoryOutput;
-import com.brycen.bookmanagement.service.impl.CategoryServiceImpl;
+import com.brycen.bookmanagement.entity.CategoryEntity;
+import com.brycen.bookmanagement.repository.CategoryRepository;
+import com.brycen.bookmanagement.service.CategoryService;
 
 @RestController
 public class CategoryController {
 
 	@Autowired
-	private CategoryServiceImpl categoryService;
+	private CategoryService categoryService;
 	
+	@Autowired CategoryRepository cate;
 	
 //	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value= "/api/categorys")
-	public CategoryOutput showCategory() {
+	public CategoryOutput showCategory(
+			@RequestParam(value = "page" ,required = false) Integer page,
+			@RequestParam(value = "limit", required = false) Integer limit) {
 			CategoryOutput cate = new CategoryOutput();
-			 cate.setListResult(categoryService.findAll());
+			cate.setPage(page);
+			cate.setListResult(categoryService.findAll(PageRequest.of(page-1, limit)));
+			cate.setTotalPage((int)Math.ceil((double)(categoryService.totalItem()) / limit));
 			 return cate;
 	}
 	@PostMapping(value = "/api/categorys")
@@ -48,6 +57,11 @@ public class CategoryController {
 	@DeleteMapping(value="/api/categorys/{id}")
 	public void deleteCategory(@PathVariable long id) {
 		categoryService.delete(id);
+	}
+	
+	@GetMapping(value= "/api/categorys/test/{id}")
+	public CategoryEntity test(@PathVariable  long id) {
+			 return cate.getById(id);
 	}
 	
 }

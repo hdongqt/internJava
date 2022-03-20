@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.annotations.Where;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,9 +32,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   @Query("update UserEntity u set u.password = ?2 where u.username=?1")
   int changePassword(String username, String newPassword);
   
+  @Where(clause = "is_delete = false")
   List<UserEntity> findByFullnameLike(String key);
   
-  List<UserEntity> findByFullnameLike(String key,Pageable pageable);
+//  List<UserEntity> findByFullnameLike(String key,Pageable pageable);
   
   
   
@@ -41,6 +43,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   //admin
   @Query("select u from UserEntity u where u.role.id = ?1 and  fullname like %?2%")
   List<UserEntity> findUserByRoleAndFullname(Long idRole,String fullname,Pageable pageable);
+  
   
   
 }

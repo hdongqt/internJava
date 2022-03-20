@@ -20,17 +20,13 @@ import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
 import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
 import com.brycen.bookmanagement.dto.response.BorrowOutput;
 import com.brycen.bookmanagement.dto.response.UserDTO;
-import com.brycen.bookmanagement.service.BorrowService;
-import com.brycen.bookmanagement.service.ReaderService;
+import com.brycen.bookmanagement.service.LibrarianService;
 
 @RestController
 public class LibrarianController {
 
 	@Autowired
-	private BorrowService borrowService;
-	
-	@Autowired
-	private ReaderService readerService;
+	private LibrarianService librarianService;
 	
 	@GetMapping(value = "/api/librarian/borrow")
 	public BorrowOutput showBook(
@@ -41,8 +37,8 @@ public class LibrarianController {
 			@RequestParam(value = "limit", required = false) Integer limit) {
 		BorrowOutput borrows = new BorrowOutput();
 	   	borrows.setPage(page);
-	   	borrows.setListResult(borrowService.getListBorrow(filter, username , PageRequest.of(page-1, limit)));
-	   	borrows.setTotalPage((int)Math.ceil((double)(borrowService.totalItem()) / limit));
+	   	borrows.setListResult(librarianService.getListBorrow(filter, username , PageRequest.of(page-1, limit)));
+	   	borrows.setTotalPage((int)Math.ceil((double)(librarianService.totalItem()) / limit));
 		return borrows;
 	}
 	
@@ -50,28 +46,28 @@ public class LibrarianController {
 	@GetMapping(value = "/api/librarian/searchuser")
 	public List<UserDTO> searchUser(
 			@RequestParam(value = "fullname", required = false) String fullname){
-		return readerService.searchReader(fullname);
+		return librarianService.searchReader(fullname);
 	}
 	
 	@DeleteMapping(value = "/api/librarian/borrow")
-	public void deleteBorrow(long[] ids) {
-		borrowService.delete(ids);
+	public void deleteBorrow(@RequestBody long[] ids) {
+		librarianService.delete(ids);
 	}
 	
 		//xem chi tiết 
 	@GetMapping(value = "/api/librarian/borrow/{id}")
 	public BorrowDTO getOneBorrow(@PathVariable long id) {
-		return borrowService.getOneBorrow(id);
+		return librarianService.getOneBorrow(id);
 	}
 	@PostMapping(value="/api/librarian/borrow/create")
 	public BorrowDTO createBorrow(@Valid @RequestBody BorrowCreateRequest brquest ) {
-		return borrowService.createBorrow(brquest);
+		return librarianService.createBorrow(brquest);
 	}
+	
 	@PutMapping(value="/api/librarian/borrow/{id}")
 	public BorrowDTO updateBorrow(@Valid @RequestBody BorrowUpdateRequest request,
 			@PathVariable long id) {
 				request.setId(id);
-				return borrowService.updateBorrow(request);
-		
+				return librarianService.updateBorrow(request);
 	}
 }

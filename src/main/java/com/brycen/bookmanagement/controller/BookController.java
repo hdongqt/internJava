@@ -70,7 +70,7 @@ public class BookController {
 		return bookService.save(model);
 	} 
 	@DeleteMapping(value="/api/books")
-	public void deleteBook(long[] ids) {
+	public void deleteBook(@RequestBody long[] ids) {
 		bookService.delete(ids);
 	}
 	

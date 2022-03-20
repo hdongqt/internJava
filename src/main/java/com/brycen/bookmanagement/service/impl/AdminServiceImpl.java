@@ -56,5 +56,19 @@ public class AdminServiceImpl implements AdminService {
 		AdminInfoUserDTO user = userConverter.toInfoDTO(entity);
 		return user;
 	}
+	@Override
+	public AdminInfoUserDTO updateUser(AdminInfoUserDTO dto) {
+		if (userRepository.existsEmailByOther(dto.getEmail(), dto.getUsername()) !=null) {
+			throw new BookAPIException(HttpStatus.BAD_REQUEST,"Error: Email đã được sử dụng !");
+		}
+		UserEntity entity = userRepository.findById(dto.getId()).orElseThrow(()->
+		 new ResourceNotFoundException("User", "id", dto.getId()));
+		entity = userConverter.mapInfoDTOToEntity(dto, entity);
+		RoleEntity roleE = roleRepository.findByCode(dto.getRoleCode()).orElseThrow(()->
+		 new BookAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy role "));
+		entity.setRole(roleE);
+		entity = userRepository.save(entity);
+		return userConverter.toInfoDTO(entity);
+	}
 
 }

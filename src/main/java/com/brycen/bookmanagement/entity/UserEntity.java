@@ -16,6 +16,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
 
 import lombok.Getter;
@@ -32,6 +33,7 @@ import lombok.Setter;
       @UniqueConstraint(columnNames = "username"),
       @UniqueConstraint(columnNames = "email") 
     })
+@SQLDelete(sql = "Update users set is_delete = true Where id = ?")
 public class UserEntity extends BaseEntity{
 
 	  @NotBlank

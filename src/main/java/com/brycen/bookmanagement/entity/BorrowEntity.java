@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -28,6 +29,7 @@ import lombok.Setter;
 @Entity
 @Table(name="borrows")
 @EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "Update borrows set is_delete = true Where id = ?")
 public class BorrowEntity extends BaseEntity{
 	@Column
 	private Date borrowDate;
@@ -66,7 +68,7 @@ public class BorrowEntity extends BaseEntity{
         joinColumns = @JoinColumn(name = "detail_id"),
         inverseJoinColumns = @JoinColumn(name = "book_id")
     )
-	  private List<BookEntity> books = new ArrayList<>();
+	 private List<BookEntity> books = new ArrayList<>();
 	
 	
 	@ManyToOne
