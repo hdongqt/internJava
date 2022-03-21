@@ -12,18 +12,16 @@ import com.brycen.bookmanagement.entity.BorrowEntity;
 
 public interface BorrowRespository extends JpaRepository<BorrowEntity, Long>{
 	 //get all borrow of user
-	 @Query("select b from BorrowEntity b where b.user.username = ?1")
-	 @Where(clause = "is_delete = false")
+	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.isDelete = false")
 	 List<BorrowEntity> getByUsername(String username,Pageable pageable);
 	 
 	//get borrow paid or unpaid of  user 
-	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.status = ?2")
-	 @Where(clause = "is_delete = false")
+	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.status = ?2 and b.isDelete = false")
 	 List<BorrowEntity> getHistoryBorrowUserPaidOrUnPaid(String username,boolean status,Pageable pageable);
 	 
 	 //get borrow  out date of  user 
-	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.status = 0 and now() > b.appointmentDate")
-	 @Where(clause = "is_delete = false")
+	 @Query("select b from BorrowEntity b where b.user.username = ?1 "
+	 		+ "and b.status = 0 and now() > b.appointmentDate and b.isDelete = false")
 	 List<BorrowEntity> getHistoryBorrowUserOutDate(String username,Pageable pageable);
 	 
 	 @Transactional
@@ -33,15 +31,18 @@ public interface BorrowRespository extends JpaRepository<BorrowEntity, Long>{
 	 
 	 //----------------librarian -----------------
 	 //get all
-	 @Query("select b from BorrowEntity b")
+	 @Query("select b from BorrowEntity b where b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
 	 List<BorrowEntity> getAllListBorrow(Pageable pageable);
 	 
 	 // lấy danh sách chưa trả hoặc đã trả
-	 @Query("select b from BorrowEntity b where b.status = ?2")
+	 @Query("select b from BorrowEntity b where b.status = ?2 and "
+	 		+ "b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
 	 List<BorrowEntity> getListBorrowPaidOrUnPaid(boolean status,Pageable pageable);
 	 
 	 
-	 @Query("select b from BorrowEntity b where b.status = 0 and now() > b.appointmentDate")
+	 @Query("select b from BorrowEntity b where b.status = 0 and "
+	 		+ "now() > b.appointmentDate and"
+	 		+ " b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
 	 List<BorrowEntity> getListBorrowOutDate(Pageable pageable);
 	 
 	 
