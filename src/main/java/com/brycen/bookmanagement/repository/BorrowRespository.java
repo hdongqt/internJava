@@ -1,28 +1,28 @@
 package com.brycen.bookmanagement.repository;
 
-import java.util.List;
+import javax.transaction.Transactional;
 
-import org.hibernate.annotations.Where;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import javax.transaction.Transactional;
+
 import com.brycen.bookmanagement.entity.BorrowEntity;
 
 public interface BorrowRespository extends JpaRepository<BorrowEntity, Long>{
 	 //get all borrow of user
 	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.isDelete = false")
-	 List<BorrowEntity> getByUsername(String username,Pageable pageable);
+	 Page<BorrowEntity> getByUsername(String username,Pageable pageable);
 	 
 	//get borrow paid or unpaid of  user 
 	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.status = ?2 and b.isDelete = false")
-	 List<BorrowEntity> getHistoryBorrowUserPaidOrUnPaid(String username,boolean status,Pageable pageable);
+	 Page<BorrowEntity> getHistoryBorrowUserPaidOrUnPaid(String username,boolean status,Pageable pageable);
 	 
 	 //get borrow  out date of  user 
 	 @Query("select b from BorrowEntity b where b.user.username = ?1 "
 	 		+ "and b.status = 0 and now() > b.appointmentDate and b.isDelete = false")
-	 List<BorrowEntity> getHistoryBorrowUserOutDate(String username,Pageable pageable);
+	 Page<BorrowEntity> getHistoryBorrowUserOutDate(String username,Pageable pageable);
 	 
 	 @Transactional
 	 @Modifying
@@ -32,30 +32,30 @@ public interface BorrowRespository extends JpaRepository<BorrowEntity, Long>{
 	 //----------------librarian -----------------
 	 //get all
 	 @Query("select b from BorrowEntity b where b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
-	 List<BorrowEntity> getAllListBorrow(Pageable pageable);
+	 Page<BorrowEntity> getAllListBorrow(Pageable pageable);
 	 
 	 // lấy danh sách chưa trả hoặc đã trả
 	 @Query("select b from BorrowEntity b where b.status = ?2 and "
 	 		+ "b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
-	 List<BorrowEntity> getListBorrowPaidOrUnPaid(boolean status,Pageable pageable);
+	 Page<BorrowEntity> getListBorrowPaidOrUnPaid(boolean status,Pageable pageable);
 	 
 	 
 	 @Query("select b from BorrowEntity b where b.status = 0 and "
 	 		+ "now() > b.appointmentDate and"
 	 		+ " b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
-	 List<BorrowEntity> getListBorrowOutDate(Pageable pageable);
+	 Page<BorrowEntity> getListBorrowOutDate(Pageable pageable);
 	 
 	 
 	 
 	 //librarian get all borrow of user
 	 @Query("select b from BorrowEntity b where b.user.username = ?1")
-	 List<BorrowEntity> getBorrowOfUserForManager(String username,Pageable pageable);
+	 Page<BorrowEntity> getBorrowOfUserForManager(String username,Pageable pageable);
 	 
 	//librarian get borrow paid or unpaid of  user 
 	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.status = ?2")
-	 List<BorrowEntity> getHistoryBorrowUserPaidOrUnPaidForManager(String username,boolean status,Pageable pageable);
+	 Page<BorrowEntity> getHistoryBorrowUserPaidOrUnPaidForManager(String username,boolean status,Pageable pageable);
 	 
 	 //librarian get borrow  out date of  user 
 	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.status = 0 and now() > b.appointmentDate")
-	 List<BorrowEntity> getHistoryBorrowUserOutDateForManager(String username,Pageable pageable);
+	 Page<BorrowEntity> getHistoryBorrowUserOutDateForManager(String username,Pageable pageable);
 }

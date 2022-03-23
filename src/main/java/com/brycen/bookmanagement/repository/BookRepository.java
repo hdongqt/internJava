@@ -1,7 +1,5 @@
 package com.brycen.bookmanagement.repository;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.hibernate.annotations.Where;
@@ -21,11 +19,11 @@ public interface BookRepository extends JpaRepository<BookEntity, Long>{
     void updateCategoryOfBook(CategoryEntity cateOld, CategoryEntity cateNew);
 	
 	@Where(clause = "is_delete = false")
-	List<BookEntity> findByBooknameLike(String key,Pageable pageable);
+	Page<BookEntity> findByBooknameLike(String key,Pageable pageable);
 	
 	@Query("select b from BookEntity b where b.category.name like %?1%")
 	@Where(clause = "is_delete = false")
-	List<BookEntity> findByCategoryNameLike(String key,Pageable pageable);
+	Page<BookEntity> findByCategoryNameLike(String key,Pageable pageable);
 	
 	@Where(clause = "is_delete = false")
 	Page<BookEntity> findAll(Pageable pageable);

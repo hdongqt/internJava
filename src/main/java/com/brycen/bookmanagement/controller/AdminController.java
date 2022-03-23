@@ -3,6 +3,8 @@ package com.brycen.bookmanagement.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,16 +23,13 @@ public class AdminController {
 	private AdminService adminService;
 
 	@GetMapping(value="/api/admin/user")
-	public AdminInfoUserOutput showListUser(
+	public ResponseEntity<AdminInfoUserOutput> showListUser(
 			@RequestParam(value = "role", required = false) String roleCode,
 			@RequestParam(value = "fullname", required = false) String fullname,
 			@RequestParam(value = "page" ,required = false) Integer page,
 			@RequestParam(value = "limit", required = false) Integer limit) {
-		      AdminInfoUserOutput result = new AdminInfoUserOutput();
-					result.setPage(page);
-					result.setListResult(adminService.showUser(roleCode, fullname, PageRequest.of(page-1, limit)));
-					result.setTotalPage((int)Math.ceil((double)(adminService.totalItem()) / limit));
-				return result;
+		  return new ResponseEntity<AdminInfoUserOutput>(
+				  adminService.showUser(roleCode, fullname, PageRequest.of(page-1, limit)), HttpStatus.OK); 
 	}
 	
 	@GetMapping(value="/api/admin/user/{id}")

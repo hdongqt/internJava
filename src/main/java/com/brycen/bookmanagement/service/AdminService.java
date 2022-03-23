@@ -1,15 +1,13 @@
 package com.brycen.bookmanagement.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Pageable;
 
 import com.brycen.bookmanagement.dto.AdminInfoUserDTO;
+import com.brycen.bookmanagement.dto.response.AdminInfoUserOutput;
 
 public interface AdminService {
  void delete(long[] ids);
-List<AdminInfoUserDTO> showUser(String roleCode, String fullname, Pageable pageable);
-int totalItem();
+ AdminInfoUserOutput showUser(String roleCode, String fullname, Pageable pageable);
 AdminInfoUserDTO getUserDetail(long id);
 AdminInfoUserDTO updateUser(AdminInfoUserDTO dto);
 }

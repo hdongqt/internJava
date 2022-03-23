@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +14,8 @@ import com.brycen.bookmanagement.converter.BorrowConverter;
 import com.brycen.bookmanagement.converter.CustomConverter;
 import com.brycen.bookmanagement.dto.request.ChangePasswordRequest;
 import com.brycen.bookmanagement.dto.response.UserDTO;
-import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
+import com.brycen.bookmanagement.dto.response.UserHistoryDTO;
+import com.brycen.bookmanagement.dto.response.UserHistoryOutput;
 import com.brycen.bookmanagement.entity.BorrowEntity;
 import com.brycen.bookmanagement.entity.UserEntity;
 import com.brycen.bookmanagement.exception.BookAPIException;
@@ -94,8 +96,9 @@ public class ReaderServiceImpl implements ReaderService{
 	}
 
 	
-	public List<UserHistoryResponse> getListUserHistory(String username,String type,Pageable pageable) {
-		List<BorrowEntity> lists = new ArrayList<BorrowEntity>();
+	public UserHistoryOutput getListUserHistory(String username,String type,Pageable pageable) {
+		Page<BorrowEntity> lists ;
+		UserHistoryOutput output = new UserHistoryOutput();
 		switch (type) {
 		case "OUTDATE":
 			lists = borrowRespository.getHistoryBorrowUserOutDate(username,pageable);
@@ -110,11 +113,14 @@ public class ReaderServiceImpl implements ReaderService{
 			lists = borrowRespository.getByUsername(username,pageable);
 			break;
 		}
-		List<UserHistoryResponse> results = new  ArrayList<UserHistoryResponse>(); 
+		List<UserHistoryDTO> results = new  ArrayList<UserHistoryDTO>(); 
 		for (BorrowEntity borrowEntity : lists) {
 			results.add(borrowConverter.mapEntityToHistoryResponse(borrowEntity));
 		}
-		return results;
+		output.setListResult(results);
+		output.setPage(lists.getNumber()+1);
+		output.setTotalPage(lists.getTotalPages());
+		return output;
 	}
 
 	@Override
@@ -122,10 +128,6 @@ public class ReaderServiceImpl implements ReaderService{
 		for (long id : ids) {
 			borrowRespository.deleteById(id);
 		}
-	}
-	@Override
-	public int totalItem() {
-		return (int) borrowRespository.count();
 	}
 
 }

@@ -36,16 +36,12 @@ public class BookController {
 	private BookService bookService;
 	
 	@GetMapping(value = "/api/books")
-	public BookOutput showBook(
+	public ResponseEntity<BookOutput> showBook(
 			@RequestParam(value = "key", required = false) String key,
 			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "page" ,required = false) Integer page,
 			@RequestParam(value = "limit", required = false) Integer limit) {
-		    BookOutput result = new BookOutput();
-			result.setPage(page);
-			result.setListResult(bookService.findBook(key, type, PageRequest.of(page-1, limit)));
-			result.setTotalPage((int)Math.ceil((double)(bookService.totalItem()) / limit));
-		return result;
+		return new ResponseEntity<BookOutput>(bookService.findBook(key, type, PageRequest.of(page-1, limit)), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/api/books")

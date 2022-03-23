@@ -6,6 +6,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,17 +31,14 @@ public class LibrarianController {
 	private LibrarianService librarianService;
 	
 	@GetMapping(value = "/api/librarian/borrow")
-	public BorrowOutput showBook(
+	public  ResponseEntity<?> showBook(
 			//username lay tu fe sau khi lua chon user da tim kiem
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "filter", required = false) String filter,
 			@RequestParam(value = "page" ,required = false) Integer page,
 			@RequestParam(value = "limit", required = false) Integer limit) {
-		BorrowOutput borrows = new BorrowOutput();
-	   	borrows.setPage(page);
-	   	borrows.setListResult(librarianService.getListBorrow(filter, username , PageRequest.of(page-1, limit)));
-	   	borrows.setTotalPage((int)Math.ceil((double)(librarianService.totalItem()) / limit));
-		return borrows;
+		return new ResponseEntity<BorrowOutput>(
+				librarianService.getListBorrow(filter, username, PageRequest.of(page-1, limit)), HttpStatus.OK);
 	}
 	
 	

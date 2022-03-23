@@ -10,6 +10,7 @@ import com.brycen.bookmanagement.entity.CategoryEntity;
 public interface CategoryRepository extends JpaRepository<CategoryEntity, Long>{
 	CategoryEntity findOneByCode(String code);
 	
+	
 	Page<CategoryEntity> findAll(Pageable pageable);
 	
 	@Query("select c from CategoryEntity c where c.code = ?1 and c.id != ?2")

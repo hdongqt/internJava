@@ -1,10 +1,10 @@
 package com.brycen.bookmanagement.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +12,7 @@ import com.brycen.bookmanagement.converter.BookConverter;
 import com.brycen.bookmanagement.converter.CustomConverter;
 import com.brycen.bookmanagement.converter.UploadFileIMG;
 import com.brycen.bookmanagement.dto.BookDTO;
+import com.brycen.bookmanagement.dto.response.BookOutput;
 import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.CategoryEntity;
 import com.brycen.bookmanagement.exception.ResourceNotFoundException;
@@ -47,10 +48,6 @@ public class BookServiceImpl implements BookService{
 		BookEntity bookEntity = bookRepository.findById(id).orElseThrow(() 
 				-> new ResourceNotFoundException("Book", "id", id));
 		return customConverter.mapToDTO(bookEntity, BookDTO.class);
-	}
-	@Override
-	public int totalItem() {
-		return (int) bookRepository.count();
 	}
 
 	@Override
@@ -88,8 +85,9 @@ public class BookServiceImpl implements BookService{
 	}
     //show all book , search 
 	@Override
-	public List<BookDTO> findBook(String key,String type,Pageable pageable) {
-		List<BookEntity> listAllBook = new ArrayList<BookEntity>();
+	public BookOutput findBook(String key,String type,Pageable pageable) {
+		BookOutput output = new BookOutput();
+		Page<BookEntity> listAllBook;
 		if(key!=null && type!=null) {
 			if(type.equals("bookname")) {
 				listAllBook =  bookRepository.findByBooknameLike("%"+key+"%",pageable);
@@ -97,10 +95,13 @@ public class BookServiceImpl implements BookService{
 				listAllBook =  bookRepository.findByCategoryNameLike(key,pageable);
 			}
 		}else {
-			listAllBook =  bookRepository.findAll(pageable).toList();
+			listAllBook =  bookRepository.findAll(pageable);
 		}
-		List<BookDTO> results = customConverter.mapList(listAllBook, BookDTO.class);
-		return results;
+		List<BookDTO> results = customConverter.mapList(listAllBook.toList(), BookDTO.class);
+		output.setListResult(results);
+		output.setPage(listAllBook.getNumber() + 1);
+		output.setTotalPage(listAllBook.getTotalPages());
+		return output;
 	}
 	
 }

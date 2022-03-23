@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.brycen.bookmanagement.converter.UserConverter;
 import com.brycen.bookmanagement.dto.AdminInfoUserDTO;
+import com.brycen.bookmanagement.dto.response.AdminInfoUserOutput;
 import com.brycen.bookmanagement.entity.RoleEntity;
 import com.brycen.bookmanagement.entity.UserEntity;
 import com.brycen.bookmanagement.exception.BookAPIException;
@@ -34,20 +36,20 @@ public class AdminServiceImpl implements AdminService {
 	}
 	}
 	@Override
-	public List<AdminInfoUserDTO> showUser(String roleCode, String fullname,Pageable pageable) {
+	public AdminInfoUserOutput showUser(String roleCode, String fullname,Pageable pageable) {
+		AdminInfoUserOutput output = new AdminInfoUserOutput();
 		RoleEntity roleE = roleRepository.findByCode(roleCode).orElseThrow(()->
 		 new BookAPIException(HttpStatus.NOT_FOUND, "Không tìm thấy role "));
 
-		List<UserEntity> lists = userRepository.findUserByRoleAndFullname(roleE.getId(), fullname,pageable);
+		Page<UserEntity> lists = userRepository.findUserByRoleAndFullname(roleE.getId(), fullname,pageable);
 		 List<AdminInfoUserDTO> results = new ArrayList<AdminInfoUserDTO>();
-		 for (UserEntity en : lists) {
+		 for (UserEntity en : lists.toList()) {
 			results.add(userConverter.toInfoDTO(en));
 		}
-		return results;
-	}
-	@Override
-	public int totalItem() {
-		return (int) userRepository.count();
+		 output.setListResult(results);
+		 output.setPage(lists.getNumber() + 1);
+		  output.setTotalPage(lists.getTotalPages());
+	  	return output;
 	}
 	@Override
 	public AdminInfoUserDTO getUserDetail(long id) {

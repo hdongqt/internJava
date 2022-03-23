@@ -1,10 +1,10 @@
 package com.brycen.bookmanagement.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import com.brycen.bookmanagement.converter.CustomConverter;
 import com.brycen.bookmanagement.dto.BorrowDTO;
 import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
 import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
+import com.brycen.bookmanagement.dto.response.BorrowOutput;
 import com.brycen.bookmanagement.dto.response.UserDTO;
 import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.BorrowEntity;
@@ -42,8 +43,9 @@ public class LibrarianServiceImpl implements LibrarianService  {
 	
 	
      @Override
-	public List<BorrowDTO> getListBorrow(String filter, String username, Pageable pageable) {
-		List<BorrowEntity> lists = new ArrayList<BorrowEntity>();
+	public  BorrowOutput getListBorrow(String filter, String username, Pageable pageable) {
+    	 BorrowOutput output = new BorrowOutput();
+		Page<BorrowEntity> lists ;
 		if(username !=null &&  username.trim() != "") {
 			switch (filter) {
 			case "OUTDATE":
@@ -79,12 +81,10 @@ public class LibrarianServiceImpl implements LibrarianService  {
 		for (BorrowEntity borrowEntity : lists) {
 			results.add(borrowConverter.mapEntityToBorrowDTO(borrowEntity));
 		}
-		return results;
-	}
-
-	@Override
-	public int totalItem() {
-		return (int) borrowRespository.count();
+		output.setListResult(results);
+		output.setPage(lists.getNumber() + 1);
+		output.setTotalPage(lists.getTotalPages());
+		return output;
 	}
 
 	@Override

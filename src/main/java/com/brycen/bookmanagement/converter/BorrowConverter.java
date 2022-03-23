@@ -12,7 +12,7 @@ import com.brycen.bookmanagement.dto.BorrowDTO;
 import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
 import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
 import com.brycen.bookmanagement.dto.response.UserDTO;
-import com.brycen.bookmanagement.dto.response.UserHistoryResponse;
+import com.brycen.bookmanagement.dto.response.UserHistoryDTO;
 import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.BorrowEntity;
 
@@ -21,8 +21,8 @@ public class BorrowConverter {
 	   @Autowired
 	   private CustomConverter appConverter;
 	   
-	  public UserHistoryResponse mapEntityToHistoryResponse(BorrowEntity entity){
-		  UserHistoryResponse response = appConverter.mapToDTO(entity, UserHistoryResponse.class);
+	  public UserHistoryDTO mapEntityToHistoryResponse(BorrowEntity entity){
+		  UserHistoryDTO response = appConverter.mapToDTO(entity, UserHistoryDTO.class);
 		  if(entity.isStatus() == false &&  new Date().compareTo(entity.getAppointmentDate()) > 0){
 			  response.setStatus("Trễ hạn");
 		  }else if(entity.isStatus()) {

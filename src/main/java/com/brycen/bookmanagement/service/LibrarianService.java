@@ -7,13 +7,13 @@ import org.springframework.data.domain.Pageable;
 import com.brycen.bookmanagement.dto.BorrowDTO;
 import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
 import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
+import com.brycen.bookmanagement.dto.response.BorrowOutput;
 import com.brycen.bookmanagement.dto.response.UserDTO;
 
 public interface LibrarianService {
 
-	List<BorrowDTO> getListBorrow(String filter, String username, Pageable pageable);
+	 BorrowOutput getListBorrow(String filter, String username, Pageable pageable);
 
-	int totalItem();
 
 	BorrowDTO getOneBorrow(Long id);
 

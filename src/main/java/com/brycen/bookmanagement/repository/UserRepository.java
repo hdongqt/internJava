@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.hibernate.annotations.Where;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -42,7 +43,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   
   //admin
   @Query("select u from UserEntity u where u.role.id = ?1 and  fullname like %?2%")
-  List<UserEntity> findUserByRoleAndFullname(Long idRole,String fullname,Pageable pageable);
+  Page<UserEntity> findUserByRoleAndFullname(Long idRole,String fullname,Pageable pageable);
   
   
   

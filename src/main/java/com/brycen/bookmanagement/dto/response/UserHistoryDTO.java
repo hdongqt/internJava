@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-public class UserHistoryResponse {
+public class UserHistoryDTO {
 	private Long id;
 //	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date borrowDate;
