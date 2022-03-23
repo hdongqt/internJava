@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -32,10 +33,13 @@ import lombok.Setter;
 @SQLDelete(sql = "Update borrows set is_delete = true Where id = ?")
 public class BorrowEntity extends BaseEntity{
 	@Column
+	@Type(type="date")
 	private Date borrowDate;
 	@Column
+	 @Type(type="date")
 	private Date appointmentDate;
 	@Column
+	 @Type(type="date")
 	private Date returnDate;
 	@Column
 	private Long fine;
@@ -46,9 +50,11 @@ public class BorrowEntity extends BaseEntity{
 	private boolean status =Boolean.FALSE;
 	
 	@Column
+	 @Type(type="date")
 	@CreatedDate
 	private Date createDate;
 	@Column
+	 @Type(type="date")
 	@LastModifiedDate
 	private Date updateDate;
 	

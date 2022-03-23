@@ -34,13 +34,13 @@ public class ReaderController {
 		//get history
 		@GetMapping(value= "/api/reader/history")
 		public ResponseEntity<?> test(
-				@RequestParam(value = "filter" ,defaultValue = "ALL") String filter,
+				@RequestParam(value = "type" ,defaultValue = "ALL") String type,
 				@RequestParam(value = "page" ,defaultValue = "1") Integer page,
-				@RequestParam(value = "limit", defaultValue =  "1") Integer limit
+				@RequestParam(value = "limit", defaultValue =  "5") Integer limit
 				) {
 			List<UserHistoryResponse> lists = readerService.getListUserHistory(
 					SecurityUtils.getPrincipal().getUsername(),
-					filter,
+					type,
 					PageRequest.of(page-1, limit));
 				return new ResponseEntity<>(lists,HttpStatus.OK);
 		}

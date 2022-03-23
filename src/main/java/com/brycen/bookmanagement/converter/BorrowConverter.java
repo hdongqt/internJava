@@ -24,7 +24,11 @@ public class BorrowConverter {
 	  public UserHistoryResponse mapEntityToHistoryResponse(BorrowEntity entity){
 		  UserHistoryResponse response = appConverter.mapToDTO(entity, UserHistoryResponse.class);
 		  if(entity.isStatus() == false &&  new Date().compareTo(entity.getAppointmentDate()) > 0){
-			  response.setStatus(2);
+			  response.setStatus("Trễ hạn");
+		  }else if(entity.isStatus()) {
+			  response.setStatus("Đã trả");
+		  }else {
+			  response.setStatus("Chưa trả");
 		  }
 		  response.setListbooks(appConverter.mapList(entity.getBooks(), BookDTO.class));
 	      return response;

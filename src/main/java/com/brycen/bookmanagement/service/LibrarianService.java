@@ -24,5 +24,6 @@ public interface LibrarianService {
 	BorrowDTO updateBorrow(BorrowUpdateRequest borrow);
 
 	List<UserDTO> searchReader(String fullname);
-
+	
+	boolean checkInventoryBook(long id);
 }

@@ -19,7 +19,7 @@ import com.brycen.bookmanagement.service.AdminService;
 public class AdminController {
 	@Autowired
 	private AdminService adminService;
-	
+
 	@GetMapping(value="/api/admin/user")
 	public AdminInfoUserOutput showListUser(
 			@RequestParam(value = "role", required = false) String roleCode,

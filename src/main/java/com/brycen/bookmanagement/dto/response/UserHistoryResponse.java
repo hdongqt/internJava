@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.brycen.bookmanagement.dto.BookDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Setter
 public class UserHistoryResponse {
 	private Long id;
+//	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	private Date borrowDate;
 	private Date appointmentDate;
 	private List<BookDTO> listbooks;
@@ -23,5 +25,5 @@ public class UserHistoryResponse {
 	private String createBy;
 	private String updateBy;
 	
-	private int status;
+	private String status;
 }

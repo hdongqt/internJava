@@ -15,6 +15,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Type;
 
 import com.sun.istack.NotNull;
 
@@ -56,9 +57,11 @@ public class BookEntity extends BaseEntity {
 
 	
 	@Column(name="create_date")
+	 @Type(type="date")
 	private Date createDate;
 	
 	@Column(name="update_date")
+	 @Type(type="date")
 	private Date updateDate;
 	
 

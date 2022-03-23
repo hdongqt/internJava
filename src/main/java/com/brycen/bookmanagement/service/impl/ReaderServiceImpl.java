@@ -94,9 +94,9 @@ public class ReaderServiceImpl implements ReaderService{
 	}
 
 	
-	public List<UserHistoryResponse> getListUserHistory(String username,String filter,Pageable pageable) {
+	public List<UserHistoryResponse> getListUserHistory(String username,String type,Pageable pageable) {
 		List<BorrowEntity> lists = new ArrayList<BorrowEntity>();
-		switch (filter) {
+		switch (type) {
 		case "OUTDATE":
 			lists = borrowRespository.getHistoryBorrowUserOutDate(username,pageable);
 			break;

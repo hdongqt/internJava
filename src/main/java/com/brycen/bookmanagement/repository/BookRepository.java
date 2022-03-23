@@ -29,4 +29,13 @@ public interface BookRepository extends JpaRepository<BookEntity, Long>{
 	
 	@Where(clause = "is_delete = false")
 	Page<BookEntity> findAll(Pageable pageable);
+	
+	@Query("select b from BookEntity b where b.id = ?1 and b.inventory > 0")
+	BookEntity checkInventory(long id);
+	
+	@Modifying
+	@Transactional
+	@Query("update BookEntity b set b.total = b.total-1 where b.id = ?1")
+	void minusInventory(long id);
+	
 }

@@ -1,11 +1,12 @@
 package com.brycen.bookmanagement.service.impl;
 
 import java.util.ArrayList;
-
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.brycen.bookmanagement.converter.BorrowConverter;
@@ -14,25 +15,33 @@ import com.brycen.bookmanagement.dto.BorrowDTO;
 import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
 import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
 import com.brycen.bookmanagement.dto.response.UserDTO;
+import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.BorrowEntity;
 import com.brycen.bookmanagement.entity.UserEntity;
+import com.brycen.bookmanagement.exception.BookAPIException;
 import com.brycen.bookmanagement.exception.ResourceNotFoundException;
+import com.brycen.bookmanagement.repository.BookRepository;
 import com.brycen.bookmanagement.repository.BorrowRespository;
 import com.brycen.bookmanagement.repository.UserRepository;
 import com.brycen.bookmanagement.service.LibrarianService;
 @Service
 public class LibrarianServiceImpl implements LibrarianService  {
 	@Autowired
+	private BookRepository bookRepository;
+	@Autowired
 	private BorrowRespository borrowRespository;
+	
 	@Autowired
 	private BorrowConverter borrowConverter;
+	
 	@Autowired
 	private UserRepository userRepository;
+	
 	@Autowired
 	private CustomConverter customConverter;
 	
-	//------------------------librarian ---------------------
-			@Override
+	
+     @Override
 	public List<BorrowDTO> getListBorrow(String filter, String username, Pageable pageable) {
 		List<BorrowEntity> lists = new ArrayList<BorrowEntity>();
 		if(username !=null &&  username.trim() != "") {
@@ -92,11 +101,19 @@ public class LibrarianServiceImpl implements LibrarianService  {
 
 	@Override
 	public BorrowDTO createBorrow(BorrowCreateRequest borrowRequest) {
+		for (long id : borrowRequest.getIdBooks()) {
+			if(!checkInventoryBook(id)) {
+				throw new BookAPIException(HttpStatus.BAD_REQUEST, "Hết sách");
+			}
+		}
 		BorrowEntity entity = borrowConverter.mapBorrowCreateRequestToEntity(borrowRequest);
 		UserEntity user = userRepository.findById(borrowRequest.getIdUser()).orElseThrow(()->
 		new ResourceNotFoundException("Reader", "id", borrowRequest.getIdUser()));
 		entity.setUser(user);
 		entity = borrowRespository.save(entity);
+		for (BookEntity book : entity.getBooks()) {
+			bookRepository.minusInventory(book.getId());
+		}
 		return borrowConverter.mapEntityToBorrowDTO(entity);
 	}
 
@@ -118,4 +135,11 @@ public class LibrarianServiceImpl implements LibrarianService  {
 		}
 		return lists;
 	}
+
+	@Override
+	public  boolean checkInventoryBook(long id) {
+		BookEntity book =  bookRepository.checkInventory(id);
+		return book !=null ? true : false;
+	}
+	
 }

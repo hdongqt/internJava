@@ -13,7 +13,7 @@ public interface ReaderService {
 	UserDTO save(UserDTO dto);
 	void deleteHistory(long[] ids);
     int changePassword(ChangePasswordRequest password);
-	List<UserHistoryResponse> getListUserHistory(String username,String filter,Pageable pageable);
+	List<UserHistoryResponse> getListUserHistory(String username,String type,Pageable pageable);
 	int totalItem();
 	void delete(long[] ids);
 }
