@@ -15,12 +15,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BookDTO extends BaseDTO{
-	@NotBlank
+	@NotBlank(message = "Tên sách không hợp lệ")
 	private String bookname;
 	@NotBlank
 	@Size(min=3,max=100,message = "Tên tác giả không hợp lệ")
 	private String author;
-	@NotBlank
+	@NotBlank(message = "Thể loại không hợp lệ")
 	private String categoryCode;
 	private String image;
 	@Min(1)

@@ -91,8 +91,7 @@ public class ReaderServiceImpl implements ReaderService{
 		if(encoder.matches(password.getOldPassword(),userDetails.getPassword())) {
 			return userRepository.changePassword(userDetails.getUsername(), 
 					encoder.encode(password.getNewPassword()));
-		}
-		return -1;
+		}else throw new BookAPIException(HttpStatus.BAD_REQUEST,"Mật khẩu cũ không chính xác");
 	}
 
 	

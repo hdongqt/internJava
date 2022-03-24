@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import com.brycen.bookmanagement.security.SecurityUtils;
 import com.brycen.bookmanagement.service.ReaderService;
 
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class ReaderController {
 	  @Autowired 
 	  private ReaderService readerService;
@@ -57,7 +59,7 @@ public class ReaderController {
 		}
 		
 		//change password
-		@PostMapping(value= "/api/reader/password")
+		@PutMapping(value= "/api/reader/password")
 		public int changePassword(@RequestBody ChangePasswordRequest password){
 			return readerService.changePassword(password);
 		}

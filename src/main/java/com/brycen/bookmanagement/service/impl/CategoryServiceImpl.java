@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryConverter categoryConverter;
 
 	@Override
-	public List<CategoryDTO> findAll(Pageable pageable) {
+	public List<CategoryDTO> findAllPagination(Pageable pageable) {
 		List<CategoryEntity> listEntity = categoryRepository.findAll(pageable).toList();
 		List<CategoryDTO> listDTO = new ArrayList<CategoryDTO>();
 		for (CategoryEntity entity : listEntity) {
@@ -37,6 +37,16 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 		return listDTO;
 	}
+	@Override
+	public List<CategoryDTO> findAll() {
+		List<CategoryEntity> listEntity = categoryRepository.findAll();
+		List<CategoryDTO> listDTO = new ArrayList<CategoryDTO>();
+		for (CategoryEntity entity : listEntity) {
+			listDTO.add(categoryConverter.toDTO(entity));
+		}
+		return listDTO;
+	}
+	
 	@Override
 	public CategoryDTO save(CategoryDTO categoryDTO) {
 		CategoryEntity categoryEntity  = new CategoryEntity();
@@ -82,4 +92,5 @@ public class CategoryServiceImpl implements CategoryService {
 	public int totalItem() {
 		return (int) categoryRepository.count();
 	}
+
 }

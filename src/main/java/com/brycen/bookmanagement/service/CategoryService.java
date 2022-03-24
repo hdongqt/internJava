@@ -12,5 +12,6 @@ public interface CategoryService {
 	void delete(long id);
 	CategoryDTO findOneByCode(String code);
 	int totalItem();
-	List<CategoryDTO> findAll(Pageable pageable);
+	List<CategoryDTO> findAllPagination(Pageable pageable);
+	List<CategoryDTO> findAll();
 }

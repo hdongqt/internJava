@@ -18,14 +18,13 @@ public interface BookRepository extends JpaRepository<BookEntity, Long>{
 	@Query("update BookEntity b set b.category =:cateNew where b.category=:cateOld")
     void updateCategoryOfBook(CategoryEntity cateOld, CategoryEntity cateNew);
 	
-	@Where(clause = "is_delete = false")
+	@Query("select b from BookEntity b where b.bookname like %?1% and b.isDelete = false")
 	Page<BookEntity> findByBooknameLike(String key,Pageable pageable);
 	
-	@Query("select b from BookEntity b where b.category.name like %?1%")
-	@Where(clause = "is_delete = false")
-	Page<BookEntity> findByCategoryNameLike(String key,Pageable pageable);
+	@Query("select b from BookEntity b where b.author like %?1% and b.isDelete = false")
+	Page<BookEntity> findByAuthorLike(String key,Pageable pageable);
 	
-	@Where(clause = "is_delete = false")
+	@Query("select b from BookEntity b where b.isDelete = false")
 	Page<BookEntity> findAll(Pageable pageable);
 	
 	@Query("select b from BookEntity b where b.id = ?1 and b.inventory > 0")

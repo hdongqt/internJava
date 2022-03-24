@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService{
 		BookEntity bookEntity  = new BookEntity();
 		if(bookDTO.getId() !=null) { //kiem tra update
 			BookEntity oldBookEntity = bookRepository.getById(bookDTO.getId());
-			bookEntity = customConverter.mapToEntity(bookDTO, oldBookEntity);
+			bookEntity = bookConverter.toEntity(bookDTO, oldBookEntity);
 			if(bookDTO.getFile() !=null) {
 				bookEntity.setImage(uploadIMG.upload(bookDTO.getFile())); 
 			}
@@ -88,11 +88,11 @@ public class BookServiceImpl implements BookService{
 	public BookOutput findBook(String key,String type,Pageable pageable) {
 		BookOutput output = new BookOutput();
 		Page<BookEntity> listAllBook;
-		if(key!=null && type!=null) {
-			if(type.equals("bookname")) {
+		if(key!=null && type!=null && !key.trim().equals("")) {
+			if(type.equals("BOOKNAME")) {
 				listAllBook =  bookRepository.findByBooknameLike("%"+key+"%",pageable);
 			}else {
-				listAllBook =  bookRepository.findByCategoryNameLike(key,pageable);
+				listAllBook =  bookRepository.findByAuthorLike(key,pageable);
 			}
 		}else {
 			listAllBook =  bookRepository.findAll(pageable);

@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +50,8 @@ public class BookController {
 		 if (result.hasErrors()) {
 			 Map<String, String> errors = new HashMap<>();
 			 result.getAllErrors().forEach((error)->{
-		           errors.put("message", error.getDefaultMessage());
+				  String fieldName = ((FieldError)error).getField();
+		           errors.put("message", fieldName +": "+  error.getDefaultMessage());
 			 });
 			 return new ResponseEntity<>(errors,HttpStatus.BAD_REQUEST);
 		}
@@ -61,9 +63,9 @@ public class BookController {
 		return bookService.getById(id);
 	}
 	@PutMapping(value= "/api/books/{id}")
-	public BookDTO updateBook(@RequestBody BookDTO model,@PathVariable("id") long id) {
+	public ResponseEntity<?> updateBook(@Valid BookDTO model,@PathVariable("id") long id,BindingResult result) {
 		model.setId(id);
-		return bookService.save(model);
+		return new ResponseEntity<BookDTO>(bookService.save(model),HttpStatus.OK);
 	} 
 	@DeleteMapping(value="/api/books")
 	public void deleteBook(@RequestBody long[] ids) {

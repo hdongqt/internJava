@@ -1,5 +1,7 @@
 package com.brycen.bookmanagement.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +33,18 @@ public class CategoryController {
 	
 //	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value= "/api/categorys")
-	public CategoryOutput showCategory(
+	public ResponseEntity<?> showCategory(
 			@RequestParam(value = "page" ,required = false) Integer page,
 			@RequestParam(value = "limit", required = false) Integer limit) {
+		if(page!=null && limit !=null) {
 			CategoryOutput cate = new CategoryOutput();
 			cate.setPage(page);
-			cate.setListResult(categoryService.findAll(PageRequest.of(page-1, limit)));
+			cate.setListResult(categoryService.findAllPagination(PageRequest.of(page-1, limit)));
 			cate.setTotalPage((int)Math.ceil((double)(categoryService.totalItem()) / limit));
-			 return cate;
+			 return new ResponseEntity<CategoryOutput>(cate, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<CategoryDTO>>(categoryService.findAll(),HttpStatus.OK);
+		
 	}
 	@PostMapping(value = "/api/categorys")
 	public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO model) {

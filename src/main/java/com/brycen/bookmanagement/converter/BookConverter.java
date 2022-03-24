@@ -32,7 +32,6 @@ public class BookConverter {
 		bookEntity.setInventory(dto.getInventory());
 		bookEntity.setPrice(dto.getPrice());
 		bookEntity.setTotal(dto.getTotal());
-		bookEntity.setUpdateDate(dto.getUpdateDate());
 		return bookEntity;
 	}
 	public BookEntity toEntity(BookDTO dto,BookEntity bookEntity) {
