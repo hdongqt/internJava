@@ -15,7 +15,7 @@ public interface BorrowRespository extends JpaRepository<BorrowEntity, Long>{
 	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.isDelete = false")
 	 Page<BorrowEntity> getByUsername(String username,Pageable pageable);
 	 
-	//get borrow paid or unpaid of  user 
+	//get borrow paid or unpaid of user 
 	 @Query("select b from BorrowEntity b where b.user.username = ?1 and b.status = ?2 and b.isDelete = false")
 	 Page<BorrowEntity> getHistoryBorrowUserPaidOrUnPaid(String username,boolean status,Pageable pageable);
 	 
@@ -31,18 +31,18 @@ public interface BorrowRespository extends JpaRepository<BorrowEntity, Long>{
 	 
 	 //----------------librarian -----------------
 	 //get all
-	 @Query("select b from BorrowEntity b where b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
+	 @Query("select b from BorrowEntity b where b.user.role.code = 'ROLE_USER'")
 	 Page<BorrowEntity> getAllListBorrow(Pageable pageable);
 	 
 	 // lấy danh sách chưa trả hoặc đã trả
-	 @Query("select b from BorrowEntity b where b.status = ?2 and "
-	 		+ "b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
+	 @Query("select b from BorrowEntity b where b.status = ?1 and "
+	 		+ "b.user.role.code = 'ROLE_USER'")
 	 Page<BorrowEntity> getListBorrowPaidOrUnPaid(boolean status,Pageable pageable);
 	 
 	 
 	 @Query("select b from BorrowEntity b where b.status = 0 and "
 	 		+ "now() > b.appointmentDate and"
-	 		+ " b.user.role.code != 'ROLE_ADMIN' and b.user.role.code != 'ROLE_LIBRARIAN'")
+	 		+ " b.user.role.code = 'ROLE_USER'")
 	 Page<BorrowEntity> getListBorrowOutDate(Pageable pageable);
 	 
 	 

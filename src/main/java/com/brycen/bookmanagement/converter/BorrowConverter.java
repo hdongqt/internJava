@@ -38,7 +38,11 @@ public class BorrowConverter {
 	  public BorrowDTO mapEntityToBorrowDTO(BorrowEntity entity){
 		  BorrowDTO borrowDTO = appConverter.mapToDTO(entity, BorrowDTO.class);
 		  if(entity.isStatus() == false &&  new Date().compareTo(entity.getAppointmentDate()) > 0){
-			  borrowDTO.setStatus(2); //status 2 la qua han
+			  borrowDTO.setStatus("Trễ hạn");
+		  }else if(entity.isStatus()) {
+			  borrowDTO.setStatus("Đã trả");
+		  }else {
+			  borrowDTO.setStatus("Chưa trả");
 		  }
 		  borrowDTO.setListbooks(appConverter.mapList(entity.getBooks(), BookDTO.class));
 		  borrowDTO.setUser(appConverter.mapToDTO(entity.getUser(), UserDTO.class));

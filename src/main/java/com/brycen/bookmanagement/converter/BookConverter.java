@@ -37,7 +37,6 @@ public class BookConverter {
 	public BookEntity toEntity(BookDTO dto,BookEntity bookEntity) {
 		bookEntity.setAuthor(dto.getAuthor());
 		bookEntity.setBookname(dto.getBookname());
-		bookEntity.setImage(dto.getImage());
 		bookEntity.setInventory(dto.getInventory());
 		bookEntity.setPrice(dto.getPrice());
 		bookEntity.setTotal(dto.getTotal());

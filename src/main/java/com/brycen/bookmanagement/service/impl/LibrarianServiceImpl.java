@@ -43,11 +43,11 @@ public class LibrarianServiceImpl implements LibrarianService  {
 	
 	
      @Override
-	public  BorrowOutput getListBorrow(String filter, String username, Pageable pageable) {
+	public  BorrowOutput getListBorrow(String type, String username, Pageable pageable) {
     	 BorrowOutput output = new BorrowOutput();
 		Page<BorrowEntity> lists ;
 		if(username !=null &&  username.trim() != "") {
-			switch (filter) {
+			switch (type) {
 			case "OUTDATE":
 				lists = borrowRespository.getHistoryBorrowUserOutDateForManager(username, pageable);
 				break;
@@ -62,7 +62,7 @@ public class LibrarianServiceImpl implements LibrarianService  {
 				break;
 			}
 		}else {
-			switch (filter) {
+			switch (type) {
 			case "OUTDATE":
 				lists = borrowRespository.getListBorrowOutDate(pageable);
 				break;
@@ -130,7 +130,7 @@ public class LibrarianServiceImpl implements LibrarianService  {
 	public List<UserDTO> searchReader(String fullname) {
 		List<UserDTO> lists = new ArrayList<UserDTO>();
 		if(fullname !=null && fullname.trim() !="") {
-			List<UserEntity> entitys = userRepository.findByFullnameLike("%"+fullname+"%");
+			List<UserEntity> entitys = userRepository.findByFullnameLike(fullname);
 			lists =  customConverter.mapList(entitys, UserDTO.class);
 		}
 		return lists;

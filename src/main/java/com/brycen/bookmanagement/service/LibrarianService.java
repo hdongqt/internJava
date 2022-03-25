@@ -12,7 +12,7 @@ import com.brycen.bookmanagement.dto.response.UserDTO;
 
 public interface LibrarianService {
 
-	 BorrowOutput getListBorrow(String filter, String username, Pageable pageable);
+	BorrowOutput getListBorrow(String type, String username, Pageable pageable);
 
 
 	BorrowDTO getOneBorrow(Long id);

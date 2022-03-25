@@ -21,8 +21,8 @@ public class BorrowDTO {
 	private Date updateDate;
 	private String createBy;
 	private String updateBy;
-	private int status;
-	private int is_delete;
+	private String status;
+	private boolean isDelete;
 	private List<BookDTO> listbooks;
 	private UserDTO user;
 }

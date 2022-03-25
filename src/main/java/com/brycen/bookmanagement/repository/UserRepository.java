@@ -33,7 +33,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
   @Query("update UserEntity u set u.password = ?2 where u.username=?1")
   int changePassword(String username, String newPassword);
   
-  @Where(clause = "is_delete = false")
+  @Query("select u from UserEntity u where u.fullname like %?1% and u.isDelete = false and u.role.code = 'ROLE_USER'")
   List<UserEntity> findByFullnameLike(String key);
   
 //  List<UserEntity> findByFullnameLike(String key,Pageable pageable);

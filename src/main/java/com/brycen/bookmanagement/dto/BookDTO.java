@@ -23,11 +23,11 @@ public class BookDTO extends BaseDTO{
 	@NotBlank(message = "Thể loại không hợp lệ")
 	private String categoryCode;
 	private String image;
-	@Min(1)
+	@Min(0)
 	private Long price;
-	@Min(1)
+	@Min(0)
 	private int total;
-	@Min(1)
+	@Min(0)
 	private int inventory;
 	private Date createDate;
 	private Date updateDate;

@@ -34,15 +34,15 @@ public class LibrarianController {
 	public  ResponseEntity<?> showBook(
 			//username lay tu fe sau khi lua chon user da tim kiem
 			@RequestParam(value = "username", required = false) String username,
-			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "page" ,required = false) Integer page,
 			@RequestParam(value = "limit", required = false) Integer limit) {
 		return new ResponseEntity<BorrowOutput>(
-				librarianService.getListBorrow(filter, username, PageRequest.of(page-1, limit)), HttpStatus.OK);
+				librarianService.getListBorrow(type, username, PageRequest.of(page-1, limit)), HttpStatus.OK);
 	}
 	
 	
-	@GetMapping(value = "/api/librarian/searchuser")
+	@GetMapping(value = "/api/librarian/borrow/searchuser")
 	public List<UserDTO> searchUser(
 			@RequestParam(value = "fullname", required = false) String fullname){
 		return librarianService.searchReader(fullname);
