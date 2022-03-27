@@ -103,5 +103,12 @@ public class BookServiceImpl implements BookService{
 		output.setTotalPage(listAllBook.getTotalPages());
 		return output;
 	}
+
+	@Override
+	public List<BookDTO> searchBook(String name) {
+		List<BookEntity> listAllBook = bookRepository.searchBook(name);
+		List<BookDTO> results = customConverter.mapList(listAllBook, BookDTO.class);
+		return results;
+	}
 	
 }

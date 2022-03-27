@@ -1,5 +1,7 @@
 package com.brycen.bookmanagement.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 
 import com.brycen.bookmanagement.dto.BookDTO;
@@ -14,4 +16,5 @@ public interface BookService {
 	void delete(long[] ids);
 	void updateWhenDeleteCategory(CategoryEntity cate);
 	BookOutput findBook(String key,String type,Pageable pageable);
+	List<BookDTO> searchBook(String name);
 }

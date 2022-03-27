@@ -24,6 +24,7 @@ public class UserConverter {
 			entity.setFullname(info.getFullname());
 			entity.setSex(info.isSex());
 			entity.setPhone(info.getPhone());
+			entity.setDelete(info.isDelete());
 //			entity = appConverter.mapToEntity(info, entity);
 			return entity;
 		}

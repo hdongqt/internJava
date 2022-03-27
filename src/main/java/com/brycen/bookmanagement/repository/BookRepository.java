@@ -1,5 +1,7 @@
 package com.brycen.bookmanagement.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.hibernate.annotations.Where;
@@ -32,7 +34,16 @@ public interface BookRepository extends JpaRepository<BookEntity, Long>{
 	
 	@Modifying
 	@Transactional
-	@Query("update BookEntity b set b.total = b.total-1 where b.id = ?1")
+	@Query("update BookEntity b set b.inventory = b.inventory-1 where b.id = ?1")
 	void minusInventory(long id);
+	
+	@Modifying
+	@Transactional
+	@Query("update BookEntity b set b.inventory = b.inventory+1 where b.id = ?1")
+	void plusInventory(long id);
+	
+	
+	@Query("select b from BookEntity b where b.bookname like %?1% and b.isDelete = false")
+	List<BookEntity> searchBook(String key);
 	
 }

@@ -60,9 +60,11 @@ public class CategoryController {
 		model.setId(id);
 		return categoryService.save(model);
 	} 
-	@DeleteMapping(value="/api/categorys/{id}")
-	public void deleteCategory(@PathVariable long id) {
-		categoryService.delete(id);
+	@DeleteMapping(value="/api/categorys")
+	public void deleteCategory(@RequestBody long[] ids) {
+		for (long id : ids) {
+			categoryService.delete(id);
+		}
 	}
 	
 	@GetMapping(value= "/api/categorys/test/{id}")

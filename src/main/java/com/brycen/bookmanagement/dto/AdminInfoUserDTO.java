@@ -2,6 +2,8 @@ package com.brycen.bookmanagement.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +20,6 @@ public class AdminInfoUserDTO {
 	private String username;
 	private String roleCode;
 	private String phone;
+	@JsonProperty("isDelete")
+	private boolean isDelete;
 }

@@ -10,7 +10,7 @@ import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
 import com.brycen.bookmanagement.dto.response.BorrowOutput;
 import com.brycen.bookmanagement.dto.response.UserDTO;
 
-public interface LibrarianService {
+public interface BorrowService {
 
 	BorrowOutput getListBorrow(String type, String username, Pageable pageable);
 

@@ -22,13 +22,13 @@ import com.brycen.bookmanagement.dto.request.BorrowCreateRequest;
 import com.brycen.bookmanagement.dto.request.BorrowUpdateRequest;
 import com.brycen.bookmanagement.dto.response.BorrowOutput;
 import com.brycen.bookmanagement.dto.response.UserDTO;
-import com.brycen.bookmanagement.service.LibrarianService;
+import com.brycen.bookmanagement.service.BorrowService;
 
 @RestController
-public class LibrarianController {
+public class BorrowController {
 
 	@Autowired
-	private LibrarianService librarianService;
+	private BorrowService librarianService;
 	
 	@GetMapping(value = "/api/librarian/borrow")
 	public  ResponseEntity<?> showBook(
@@ -64,9 +64,9 @@ public class LibrarianController {
 	}
 	
 	@PutMapping(value="/api/librarian/borrow/{id}")
-	public BorrowDTO updateBorrow(@Valid @RequestBody BorrowUpdateRequest request,
+	public ResponseEntity<BorrowDTO> updateBorrow(@Valid @RequestBody BorrowUpdateRequest request,
 			@PathVariable long id) {
 				request.setId(id);
-				return librarianService.updateBorrow(request);
+				return new ResponseEntity<BorrowDTO>(librarianService.updateBorrow(request),HttpStatus.OK);
 	}
 }

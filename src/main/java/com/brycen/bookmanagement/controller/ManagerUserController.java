@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.brycen.bookmanagement.dto.AdminInfoUserDTO;
 import com.brycen.bookmanagement.dto.response.AdminInfoUserOutput;
-import com.brycen.bookmanagement.service.AdminService;
+import com.brycen.bookmanagement.service.ManagerUserService;
 
 @RestController
-public class AdminController {
+public class ManagerUserController {
 	@Autowired
-	private AdminService adminService;
+	private ManagerUserService adminService;
 
-	@GetMapping(value="/api/admin/user")
+	@GetMapping(value="/api/users")
 	public ResponseEntity<AdminInfoUserOutput> showListUser(
 			@RequestParam(value = "role", required = false) String roleCode,
 			@RequestParam(value = "fullname", required = false) String fullname,
@@ -32,18 +32,18 @@ public class AdminController {
 				  adminService.showUser(roleCode, fullname, PageRequest.of(page-1, limit)), HttpStatus.OK); 
 	}
 	
-	@GetMapping(value="/api/admin/user/{id}")
+	@GetMapping(value="/api/users/{id}")
 	public AdminInfoUserDTO getUser(@PathVariable long id) {
 		return adminService.getUserDetail(id);
 	}
 
 	
-	@DeleteMapping(value="/api/admin/user/{id}")
+	@DeleteMapping(value="/api/users")
 	public void deleteCategory(@RequestBody long[] ids) {
 		adminService.delete(ids);
 	}
 	
-	@PutMapping(value="/api/admin/user/{id}")
+	@PutMapping(value="/api/users/{id}")
 	public AdminInfoUserDTO updateUser(@PathVariable long id,
 			@RequestBody AdminInfoUserDTO request) {
 		request.setId(id);

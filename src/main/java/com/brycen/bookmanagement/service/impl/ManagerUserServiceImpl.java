@@ -18,9 +18,9 @@ import com.brycen.bookmanagement.exception.BookAPIException;
 import com.brycen.bookmanagement.exception.ResourceNotFoundException;
 import com.brycen.bookmanagement.repository.RoleRepository;
 import com.brycen.bookmanagement.repository.UserRepository;
-import com.brycen.bookmanagement.service.AdminService;
+import com.brycen.bookmanagement.service.ManagerUserService;
 @Service
-public class AdminServiceImpl implements AdminService {
+public class ManagerUserServiceImpl implements ManagerUserService {
 
 	@Autowired
 	private UserRepository userRepository;

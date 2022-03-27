@@ -5,6 +5,7 @@ package com.brycen.bookmanagement.controller;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -70,6 +71,11 @@ public class BookController {
 	@DeleteMapping(value="/api/books")
 	public void deleteBook(@RequestBody long[] ids) {
 		bookService.delete(ids);
+	}
+	@GetMapping(value = "/api/books/search")
+	public List<BookDTO> searchBooks(
+			@RequestParam(value = "name", required = false) String name){
+		return bookService.searchBook(name);
 	}
 	
 }

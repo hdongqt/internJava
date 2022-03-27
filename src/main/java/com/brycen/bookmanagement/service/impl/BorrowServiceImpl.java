@@ -24,9 +24,9 @@ import com.brycen.bookmanagement.exception.ResourceNotFoundException;
 import com.brycen.bookmanagement.repository.BookRepository;
 import com.brycen.bookmanagement.repository.BorrowRespository;
 import com.brycen.bookmanagement.repository.UserRepository;
-import com.brycen.bookmanagement.service.LibrarianService;
+import com.brycen.bookmanagement.service.BorrowService;
 @Service
-public class LibrarianServiceImpl implements LibrarianService  {
+public class BorrowServiceImpl implements BorrowService  {
 	@Autowired
 	private BookRepository bookRepository;
 	@Autowired
@@ -121,8 +121,36 @@ public class LibrarianServiceImpl implements LibrarianService  {
 	public BorrowDTO updateBorrow(BorrowUpdateRequest borrow) {
 		BorrowEntity entity = borrowRespository.findById(borrow.getId()).orElseThrow(()->
 		 new ResourceNotFoundException("Borrow", "id", borrow.getId()));
+		List<BookEntity> listBook = entity.getBooks();
+		long[] ids = borrow.getIdBooks();
+		List<Long> dsRemove = new ArrayList<Long>();
+		List<Long> dsAdd = new ArrayList<Long>();
 		entity = borrowConverter.mapBorrowUpateRequestToEntity(borrow, entity);
 		entity = borrowRespository.save(entity);
+		//kiem tra cac cuon sach da bo khoi danh sach
+		for (BookEntity book : listBook) {
+			int check = 0;
+			for (Long i : ids) {
+				if(i==book.getId()) check = 1;
+			}
+			if(check==0) {
+				dsRemove.add(book.getId());
+			}
+		}
+		for (Long long1 : ids) {
+			int kt = 0;
+			for (BookEntity book : listBook) {
+				if(long1==book.getId()) kt = 1;
+			}
+			if(kt==0) dsAdd.add(long1);
+		}
+		//tang ton kho cua cac cuon sach bi loai di
+		for (Long id : dsRemove) {
+			bookRepository.plusInventory(id);
+		}
+		for (Long id : dsAdd) {
+			bookRepository.minusInventory(id);
+		}
 		return borrowConverter.mapEntityToBorrowDTO(entity);
 	}
 	 //tìm kiếm user
