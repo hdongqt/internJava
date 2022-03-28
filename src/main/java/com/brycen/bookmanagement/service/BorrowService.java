@@ -18,12 +18,9 @@ public interface BorrowService {
 	BorrowDTO getOneBorrow(Long id);
 
 	void delete(long[] ids);
-
 	BorrowDTO createBorrow(BorrowCreateRequest borrowRequest);
-
 	BorrowDTO updateBorrow(BorrowUpdateRequest borrow);
 
 	List<UserDTO> searchReader(String fullname);
 	
-	boolean checkInventoryBook(long id);
 }

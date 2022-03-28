@@ -12,6 +12,7 @@ import com.brycen.bookmanagement.converter.BookConverter;
 import com.brycen.bookmanagement.converter.CustomConverter;
 import com.brycen.bookmanagement.converter.UploadFileIMG;
 import com.brycen.bookmanagement.dto.BookDTO;
+import com.brycen.bookmanagement.dto.request.AddBookExitsRequest;
 import com.brycen.bookmanagement.dto.response.BookOutput;
 import com.brycen.bookmanagement.entity.BookEntity;
 import com.brycen.bookmanagement.entity.CategoryEntity;
@@ -109,6 +110,11 @@ public class BookServiceImpl implements BookService{
 		List<BookEntity> listAllBook = bookRepository.searchBook(name);
 		List<BookDTO> results = customConverter.mapList(listAllBook, BookDTO.class);
 		return results;
+	}
+
+	@Override
+	public void addBookExits(AddBookExitsRequest request) {
+		 bookRepository.addBookExits(request.getId(), request.getTotal());
 	}
 	
 }

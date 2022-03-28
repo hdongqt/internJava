@@ -21,6 +21,7 @@ public class BookConverter {
 		bookDTO.setTotal(bookEntity.getTotal());
 		bookDTO.setPrice(bookEntity.getPrice());
 		bookDTO.setCategoryCode(bookEntity.getCategory().getCode());
+		bookDTO.setCategoryName(bookEntity.getCategory().getName());
 		return bookDTO;
 	}
 	public BookEntity toEntity(BookDTO dto) {

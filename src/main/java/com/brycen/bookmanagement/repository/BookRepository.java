@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.annotations.Where;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -45,5 +44,10 @@ public interface BookRepository extends JpaRepository<BookEntity, Long>{
 	
 	@Query("select b from BookEntity b where b.bookname like %?1% and b.isDelete = false")
 	List<BookEntity> searchBook(String key);
+	
+	@Transactional
+	@Modifying
+	@Query("update BookEntity b set b.total =b.total + ?2, b.inventory = b.inventory + ?2  where b.id=?1")
+	void addBookExits(Long id, Integer total);
 	
 }

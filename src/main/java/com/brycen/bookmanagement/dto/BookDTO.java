@@ -22,6 +22,7 @@ public class BookDTO extends BaseDTO{
 	private String author;
 	@NotBlank(message = "Thể loại không hợp lệ")
 	private String categoryCode;
+	private String categoryName;
 	private String image;
 	@Min(0)
 	private Long price;

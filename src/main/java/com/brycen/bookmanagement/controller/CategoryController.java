@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.brycen.bookmanagement.repository.CategoryRepository;
 import com.brycen.bookmanagement.service.CategoryService;
 
 @RestController
+@PreAuthorize("hasRole('ADMIN')")
 public class CategoryController {
 
 	@Autowired
@@ -31,7 +33,6 @@ public class CategoryController {
 	
 	@Autowired CategoryRepository cate;
 	
-//	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping(value= "/api/categorys")
 	public ResponseEntity<?> showCategory(
 			@RequestParam(value = "page" ,required = false) Integer page,

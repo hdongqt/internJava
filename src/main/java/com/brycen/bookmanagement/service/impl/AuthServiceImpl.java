@@ -78,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
 			return ResponseEntity.ok(
 					new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getFullname(), roles.get(0)));
 		} catch (Exception e) {
-			return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new MessageResponse("Thông tin đăng nhập không chính xác "), HttpStatus.BAD_REQUEST);
 		}
 		
 	}

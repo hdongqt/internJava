@@ -2,7 +2,7 @@ package com.brycen.bookmanagement.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -100,11 +100,13 @@ public class BorrowServiceImpl implements BorrowService  {
 	}
 
 	@Override
+	@Transactional 
 	public BorrowDTO createBorrow(BorrowCreateRequest borrowRequest) {
 		for (long id : borrowRequest.getIdBooks()) {
-			if(!checkInventoryBook(id)) {
-				throw new BookAPIException(HttpStatus.BAD_REQUEST, "Hết sách");
-			}
+			BookEntity book =  bookRepository.checkInventory(id);
+		if(book==null) {
+			throw new BookAPIException(HttpStatus.BAD_REQUEST, "Hết sách id: "+ id);
+		}
 		}
 		BorrowEntity entity = borrowConverter.mapBorrowCreateRequestToEntity(borrowRequest);
 		UserEntity user = userRepository.findById(borrowRequest.getIdUser()).orElseThrow(()->
@@ -118,6 +120,7 @@ public class BorrowServiceImpl implements BorrowService  {
 	}
 
 	@Override
+	@Transactional 
 	public BorrowDTO updateBorrow(BorrowUpdateRequest borrow) {
 		BorrowEntity entity = borrowRespository.findById(borrow.getId()).orElseThrow(()->
 		 new ResourceNotFoundException("Borrow", "id", borrow.getId()));
@@ -133,10 +136,9 @@ public class BorrowServiceImpl implements BorrowService  {
 			for (Long i : ids) {
 				if(i==book.getId()) check = 1;
 			}
-			if(check==0) {
-				dsRemove.add(book.getId());
-			}
+			if(check==0) dsRemove.add(book.getId());
 		}
+		//kiem tra cac cuon sach moi duoc them vao danh sach
 		for (Long long1 : ids) {
 			int kt = 0;
 			for (BookEntity book : listBook) {
@@ -148,6 +150,7 @@ public class BorrowServiceImpl implements BorrowService  {
 		for (Long id : dsRemove) {
 			bookRepository.plusInventory(id);
 		}
+		//giam ton kho cua cac cuon sach vua them vao
 		for (Long id : dsAdd) {
 			bookRepository.minusInventory(id);
 		}
@@ -164,10 +167,5 @@ public class BorrowServiceImpl implements BorrowService  {
 		return lists;
 	}
 
-	@Override
-	public  boolean checkInventoryBook(long id) {
-		BookEntity book =  bookRepository.checkInventory(id);
-		return book !=null ? true : false;
-	}
 	
 }
