@@ -81,11 +81,13 @@ public class BookController {
 		bookService.delete(ids);
 	}
 	
+//	@PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
 	@GetMapping(value = "/api/books/search")
 	public List<BookDTO> searchBooks(
 			@RequestParam(value = "name", required = false) String name){
 		return bookService.searchBook(name);
 	}
+	
 	@PreAuthorize("hasRole('LIBRARIAN') or hasRole('ADMIN')")
 	@PutMapping(value= "/api/books")
 	public ResponseEntity<?> addBookExits(@Valid @RequestBody AddBookExitsRequest book) {

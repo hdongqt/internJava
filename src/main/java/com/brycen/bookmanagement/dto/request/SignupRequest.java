@@ -28,6 +28,7 @@ public class SignupRequest {
   @Size(max=150,message = "Địa chỉ quá 150 kí tự")
   private String address;
   
+  @NotNull(message = "Vui lòng nhập ngày sinh")
   private Date birth;
 
   @NotNull(message = "Giới tính không hợp lệ")
