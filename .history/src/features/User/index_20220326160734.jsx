@@ -1,0 +1,16 @@
+import React from 'react'
+import { useRouteMatch, Switch, Route } from 'react-router-dom';
+import NotFound  from 'components/NotFound/NotFound';
+import { ListUser } from './components/ListUser';
+import EditUser from './components/EditUser';
+
+export default function User() {
+    const match = useRouteMatch();
+  return (
+    <Switch>
+    <Route exact path={match.url} component={ListUser} />
+    <Route path={`${match.url}/update/:id`} component={EditUser} /> 
+   <Route component={NotFound} />
+  </Switch>
+  )
+}
